@@ -5,7 +5,7 @@ import { MakeApiUrl, MakeAxiosHttpClient } from "../http"
 
 export const ListHamburgers = (): Hamburgers => {
   return new GetHamburgers(
-    MakeApiUrl(apiRoutes.login),
+    MakeApiUrl(apiRoutes.hamburgers),
     MakeAxiosHttpClient<undefined, Hamburgers.Model>()
   )
 }
