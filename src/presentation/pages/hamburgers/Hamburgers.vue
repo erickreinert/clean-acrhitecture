@@ -142,7 +142,7 @@ export const currency = (value: number): string => {
 
   .hamburger-description {
     font-size: 14px;
-    color: #666;
+    color: #9e4b4b;
     margin-bottom: 15px;
   }
 
