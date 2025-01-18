@@ -1,2 +1,7 @@
 export * from "./authentication"
 export * from "./hamburgers"
+export * from "./appetizers"
+export * from "./categories"
+export * from "./beverages"
+export * from "./payment"
+export * from "./desserts"

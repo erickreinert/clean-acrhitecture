@@ -1,2 +1,7 @@
 export * from "./authenticationModel"
 export * from "./hamburgersModel"
+export * from "./categoriesModel"
+export * from "./beveragesModel"
+export * from "./appetizersModel"
+export * from "./dessertsModel"
+export * from "./paymentModel"
