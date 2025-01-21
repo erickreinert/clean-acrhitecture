@@ -1,26 +1,19 @@
 <script setup lang="ts">
-<<<<<<< HEAD
   import { defineProps, PropType, ref, inject } from 'vue'
   import { Authentication, Validation } from "../../protocols"
   import { useRouter } from 'vue-router'  // Importando o Vue Router
-=======
-import { defineProps, PropType, ref } from "vue";
-import { useRouter } from "vue-router"; // Importa o roteador para navegação
-import { Authentication, Validation } from "../../protocols";
->>>>>>> 1cb85890f4717db88fb58e175be06042952f5fcb
 
-const { authentication, currentAccount, validation } = defineProps({
-  authentication: Object as PropType<Authentication>,
-  validation: Object as PropType<Validation>,
-  currentAccount: Function as PropType<any>,
-});
+  const { authentication, currentAccount, validation } = defineProps({
+    authentication: Object as PropType<Authentication>,
+    validation: Object as PropType<Validation>,
+    currentAccount: Function as PropType<any>,
+  })
 
-const email = ref<string>("");
-const password = ref<string>("");
-const fieldError = ref<string>("");
-const valid = ref<boolean>(true);
+  const email = ref<string>('')
+  const password = ref<string>('')
+  const fieldErrror = ref<string>('')
+  const valid = ref<boolean>(true)
 
-<<<<<<< HEAD
   // Obtendo o objeto do router
   const router = useRouter()
 
@@ -48,34 +41,6 @@ const valid = ref<boolean>(true);
       console.log('finally')
     }
   }
-=======
-// Instancia o roteador
-const router = useRouter();
-
-const changeValue = (event: Event) => {
-  const { name, value } = event.target as HTMLInputElement;
-  fieldError.value = validation.validate(name, value);
-  valid.value = Boolean(validation.validate(name, value));
-};
-
-const login = async () => {
-  const params = {
-    login: email.value,
-    password: password.value,
-  };
-
-  try {
-    const response = await authentication.auth(params);
-    currentAccount.set(response);
-    // Redireciona para a tela de categorias após o login
-    router.push("/categories");
-  } catch (error) {
-    console.error("Erro no login:", error);
-  } finally {
-    console.log("Login tentativa concluída.");
-  }
-};
->>>>>>> 1cb85890f4717db88fb58e175be06042952f5fcb
 </script>
 
 <template>
@@ -85,26 +50,12 @@ const login = async () => {
       <form @submit.prevent="login">
         <div class="input-group">
           <label for="email">E-mail</label>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            v-model="email"
-            @input="changeValue"
-            placeholder="Username"
-          />
+          <input type="text" id="email" name="email" v-model="email" @input="changeValue" placeholder="Username" />
           <span class="error-message">{{ fieldError }}</span>
         </div>
         <div class="input-group">
           <label for="password">Senha</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            v-model="password"
-            @input="changeValue"
-            placeholder="Password"
-          />
+          <input type="password" id="password" name="password" v-model="password" @input="changeValue" placeholder="Password" />
         </div>
         <button type="submit" :disabled="valid">Login</button>
       </form>
@@ -118,41 +69,29 @@ const login = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100%;
-  background-image: url("/assets/images/hamburger_capa.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  margin: 0;
-  padding: 0;
+  height: 100vh; 
+  width: 100%; 
+  background-image: url('/assets/images/hamburger_capa.jpg');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  margin: 0; 
+  padding: 0; 
 }
 
 .login-form {
-<<<<<<< HEAD
   background: rgba(255, 255, 255, 0.349);
   padding: 2rem;
   border-radius: 10px;
   width: 100%;
   max-width: 400px;
-=======
-  background: rgba(255, 255, 255, 0.349); /* Fundo semitransparente para destacar o formulário */
-  padding: 2rem;
-  border-radius: 10px;
-  width: 100%;
-  max-width: 400px; /* Defina um tamanho máximo para o formulário */
->>>>>>> 1cb85890f4717db88fb58e175be06042952f5fcb
   box-shadow: 0 4px 8px rgb(3, 79, 244);
 }
 
 h1 {
   text-align: center;
   margin-bottom: 1rem;
-<<<<<<< HEAD
   font-family: 'Arial', sans-serif;
-=======
-  font-family: "Arial", sans-serif;
->>>>>>> 1cb85890f4717db88fb58e175be06042952f5fcb
   color: #3901f0;
 }
 
@@ -181,11 +120,7 @@ h1 {
 .error-message {
   color: rgb(2, 0, 0);
   font-size: 1rem;
-<<<<<<< HEAD
   font-weight: bold;
-=======
-  font-weight: bold; /* Adicionando negrito */
->>>>>>> 1cb85890f4717db88fb58e175be06042952f5fcb
   margin-top: 0.5rem;
 }
 
