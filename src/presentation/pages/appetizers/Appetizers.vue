@@ -41,7 +41,7 @@ onMounted(listarAppetizers);
 
 <template>
   <div class="appetizer-container">
-    <h1 class="title">Lista de Aperitivos</h1>
+    <h1 class="title">Aperitivos</h1>
     <ul class="appetizer-list">
       <li v-for="appetizer in listaAppetizers" :key="appetizer.id" class="appetizer-item">
         <img
@@ -55,21 +55,26 @@ onMounted(listarAppetizers);
           <p class="appetizer-description">{{ appetizer.description }}</p>
 
           <div class="appetizer-prices">
-            <span class="price">Preço (Pequeno): {{ appetizer.values.small }}</span>
+            <strong v-if="appetizer.values.small !== null" class="price-small">
+            <span class="price">Preço (Pequeno): {{ currency(appetizer.values.small) }}</span>
+            <i class="fas fa-cart-plus"></i> <!-- Ícone do carrinho -->
             <FontAwesomeIcon
               class="cart-icon"
               :icon="faShoppingCart"
               @click="cartStore.addAppetizerToCart(appetizer, 'small')"
             />
+          </strong>
           </div>
 
           <div class="appetizer-prices">
-            <span class="price">Preço (Grande): {{ appetizer.values.large }}</span>
+            <strong v-if="appetizer.values.large !== null" class="price-large">
+            <span class="price">Preço (Grande): {{ currency(appetizer.values.large) }}</span>
             <FontAwesomeIcon
               class="cart-icon"
               :icon="faShoppingCart"
               @click="cartStore.addAppetizerToCart(appetizer, 'large')"
             />
+            </strong>
           </div>
         </div>
       </li>
@@ -100,8 +105,8 @@ onMounted(listarAppetizers);
       <span class="cart-price">
         <!-- Exibe o valor dependendo do tipo do item (hambúrguer ou aperitivo) -->
         {{ item.type 
-          ? (item.type === "single" ? item.values.single : item.values.combo) 
-          : (item.size === "small" ? item.values.small : item.values.large) }}
+          ? currency(item.type === "single" ? item.values.single : item.values.combo) 
+          : currency(item.size === "small" ? item.values.small : item.values.large) }}
       </span>
       <FontAwesomeIcon
         class="remove-icon"
@@ -112,7 +117,7 @@ onMounted(listarAppetizers);
   </ul>
   <div class="cart-total">
     <span>Total:</span>
-    <span class="total-price">{{ cartStore.cartTotal }}</span>
+    <span class="total-price">{{ currency(cartStore.cartTotal) }}</span>
   </div>
 </div>
 
@@ -134,7 +139,7 @@ export const currency = (value: number): string => {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #ff6600; 
+  background-color: #ff7f32; 
   color: white;
   border-radius: 8px;
   position: relative;
@@ -143,7 +148,9 @@ export const currency = (value: number): string => {
 .title {
   text-align: center;
   font-size: 36px;
+  color: #fff; /* Cor do título em branco para contraste */
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .appetizer-list {
@@ -154,38 +161,51 @@ export const currency = (value: number): string => {
 .appetizer-item {
   display: flex;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
-  background-color: rgba(255, 255, 255, 0.1); 
+  background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
+  margin: 15px 0;
   padding: 15px;
   border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.appetizer-item:hover {
+  transform: translateY(-5px);
 }
 
 .appetizer-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 8px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-  border: 2px solid white;
+  border-radius: 8px;
+  margin-right: 20px;
 }
 
-.appetizer-info {
+.appetizer-details {
   flex-grow: 1;
 }
 
 .appetizer-title {
   font-size: 24px;
   font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
 }
 
 .appetizer-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.appetizer-prices {
   font-size: 16px;
-  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 .price {
   font-size: 18px;
-  color: #ffdd57;
+  color: #28a745;
 }
 
 .appetizer-prices {
@@ -196,7 +216,7 @@ export const currency = (value: number): string => {
 }
 
 .cart-icon {
-  color: #ffdd57;
+  color: #28a745;
   cursor: pointer;
   font-size: 20px;
   transition: transform 0.3s, color 0.3s;

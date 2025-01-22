@@ -42,7 +42,7 @@ onMounted(listarHamburgers);
 
 <template>
   <div class="hamburger-container">
-    <h1 class="title">Lista de Hambúrgueres</h1>
+    <h1 class="title">Hambúrgueres</h1>
     <ul class="hamburger-list">
       <li v-for="hamburger in listaHamburgers" :key="hamburger.id" class="hamburger-item">
         <img
@@ -56,7 +56,7 @@ onMounted(listarHamburgers);
           <p class="hamburger-description">{{ hamburger.description }}</p>
 
           <div class="hamburger-prices">
-            <span class="price">Preço (Single): {{ hamburger.values.single }}</span>
+            <span class="price">Preço (Single): {{ currency(hamburger.values.single) }}</span>
             <FontAwesomeIcon
               class="cart-icon"
               :icon="faShoppingCart"
@@ -65,7 +65,7 @@ onMounted(listarHamburgers);
           </div>
 
           <div class="hamburger-prices">
-            <span class="price">Preço (Combo): {{ hamburger.values.combo }}</span>
+            <span class="price">Preço (Combo): {{ currency(hamburger.values.combo) }}</span>
             <FontAwesomeIcon
               class="cart-icon"
               :icon="faShoppingCart"
@@ -101,8 +101,8 @@ onMounted(listarHamburgers);
       <span class="cart-price">
         <!-- Exibe o valor dependendo do tipo do item (hambúrguer ou aperitivo) -->
         {{ item.type 
-          ? (item.type === "single" ? item.values.single : item.values.combo) 
-          : (item.size === "small" ? item.values.small : item.values.large) }}
+          ? currency(item.type === "single" ? item.values.single : item.values.combo) 
+          : currency(item.size === "small" ? item.values.small : item.values.large) }}
       </span>
       <FontAwesomeIcon
         class="remove-icon"
@@ -113,7 +113,7 @@ onMounted(listarHamburgers);
   </ul>
   <div class="cart-total">
     <span>Total:</span>
-    <span class="total-price">{{ cartStore.cartTotal }}</span>
+    <span class="total-price">{{ currency(cartStore.cartTotal) }}</span>
   </div>
 </div>
 
@@ -136,7 +136,7 @@ export const currency = (value: number): string => {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #ff6600; 
+  background-color: #ff7f32; 
   color: white;
   border-radius: 8px;
   position: relative;
@@ -145,7 +145,9 @@ export const currency = (value: number): string => {
 .title {
   text-align: center;
   font-size: 36px;
+  color: #fff; /* Cor do título em branco para contraste */
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .hamburger-list {
@@ -156,19 +158,24 @@ export const currency = (value: number): string => {
 .hamburger-item {
   display: flex;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
-  background-color: rgba(255, 255, 255, 0.1); 
+  background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
+  margin: 15px 0;
   padding: 15px;
   border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.hamburger-item:hover {
+  transform: translateY(-5px);
 }
 
 .hamburger-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 8px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-  border: 2px solid white;
+  border-radius: 8px;
+  margin-right: 20px;
 }
 
 .hamburger-info {
@@ -178,23 +185,24 @@ export const currency = (value: number): string => {
 .hamburger-title {
   font-size: 24px;
   font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
 }
 
 .hamburger-description {
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
 }
 
 .price {
   font-size: 18px;
-  color: #ffdd57;
+  color: #28a745;
 }
 
 .hamburger-prices {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .cart-icon {
