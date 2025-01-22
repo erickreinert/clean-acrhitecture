@@ -81,8 +81,8 @@ onMounted(listarAppetizers);
     </ul>
 
     <div class="buttons-container">
-      <button class="button" @click="router.push('/Home')">
-        <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para a Home
+      <button class="button" @click="router.push('/Categories')">
+        <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para a Início
       </button>
       <button class="button" @click="goToNextPage">
         <FontAwesomeIcon :icon="faArrowRight" /> Avançar
@@ -136,13 +136,18 @@ export const currency = (value: number): string => {
 <style scoped>
 .appetizer-container {
   font-family: 'Arial', sans-serif;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  height: 100vh; 
+  width: 100%; 
+  margin: 0;
+  padding: 0;
   background-color: #ff7f32; 
-  color: white;
-  border-radius: 8px;
+  border-radius: px;
   position: relative;
+  background-image: url('/assets/images/porçoes.jpg');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+    
 }
 
 .title {
@@ -162,10 +167,11 @@ export const currency = (value: number): string => {
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
-  margin: 15px 0;
+  margin: 15px;
   padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  border-radius: 25px; /* Menor arredondamento */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Sombra reduzida */
   transition: transform 0.3s ease;
 }
 
@@ -229,12 +235,12 @@ export const currency = (value: number): string => {
 
 .cart-container {
   position: fixed;
-  top: 10px;
+  top: 200px;
   right: 15px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
   padding: 20px;
   border-radius: 50px;
-  max-width: 350px;
+  max-width: 500px;
   width: 100%;
   z-index: 10;
   overflow-y: auto; 

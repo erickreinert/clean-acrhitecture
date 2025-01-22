@@ -32,9 +32,8 @@
     try {
       const response = await authentication.auth(params) 
       currentAccount.set(response)
-
       // Redireciona para a página home
-      router.push('/Home')  
+      router.push('/Categories')  
     } catch (error) {
       console.error(error)
     } finally {

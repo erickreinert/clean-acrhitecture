@@ -77,8 +77,8 @@ onMounted(listarHamburgers);
     </ul>
 
     <div class="buttons-container">
-      <button class="button" @click="router.push('/Home')">
-        <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para a Home
+      <button class="button" @click="router.push('/Categories')">
+        <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para a Início
       </button>
       <button class="button" @click="goToNextPage">
         <FontAwesomeIcon :icon="faArrowRight" /> Avançar
@@ -206,7 +206,7 @@ export const currency = (value: number): string => {
 }
 
 .cart-icon {
-  color: #ffdd57;
+  color: #28a745;
   cursor: pointer;
   font-size: 20px;
   transition: transform 0.3s, color 0.3s;
