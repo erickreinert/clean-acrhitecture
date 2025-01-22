@@ -143,7 +143,7 @@ export const currency = (value: number): string => {
   background-color: #ff7f32; 
   border-radius: px;
   position: relative;
-  background-image: url('/assets/images/porçoes.jpg');
+  background-image: url('/assets/images/porcoes.jpg');
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 

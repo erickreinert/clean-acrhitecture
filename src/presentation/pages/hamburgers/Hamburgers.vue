@@ -131,15 +131,24 @@ export const currency = (value: number): string => {
 </script>
 
 <style scoped>
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 .hamburger-container {
   font-family: 'Arial', sans-serif;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  height: 100%; /* Garantir que o contêiner ocupe 100% da altura da tela */
+  width: 100%; 
+  margin: 0;
+  padding: 0;
   background-color: #ff7f32; 
-  color: white;
-  border-radius: 8px;
+  border-radius: 0; /* Corrigir border-radius para 0 ou valor desejado */
   position: relative;
+  background-image: url('/assets/images/hambuger_page.jpg');
+  background-size: cover;  /* Garantir que a imagem cubra todo o espaço */
+  background-position: center; 
+  background-repeat: no-repeat; 
 }
 
 .title {
@@ -159,10 +168,11 @@ export const currency = (value: number): string => {
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
-  margin: 15px 0;
+  margin: 15px;
   padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  border-radius: 25px; /* Menor arredondamento */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Sombra reduzida */
   transition: transform 0.3s ease;
 }
 
@@ -219,12 +229,12 @@ export const currency = (value: number): string => {
 
 .cart-container {
   position: fixed;
-  top: 10px;
+  top: 200px;
   right: 15px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
   padding: 20px;
   border-radius: 50px;
-  max-width: 350px;
+  max-width: 500px;
   width: 100%;
   z-index: 10;
   overflow-y: auto; 

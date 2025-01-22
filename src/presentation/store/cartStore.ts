@@ -1,13 +1,13 @@
-// src/stores/cartStore.ts
 import { defineStore } from "pinia";
 import type { HamburgersModel } from "../protocols";
 import type { AppetizersModel } from "../protocols";
+import type { DessertsModel } from "../protocols";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
     cart: [] as Array<
       (HamburgersModel[number] & { type: "single" | "combo" }) |
-      (AppetizersModel[number] & { size: "small" | "large" })
+      (AppetizersModel[number] & { size: "small" | "large" }) 
     >,
   }),
   getters: {
@@ -19,8 +19,9 @@ export const useCartStore = defineStore("cart", {
         } else if ("size" in item) {
           // É um aperitivo
           return total + (item.size === "small" ? item.values.small : item.values.large);
-        }
-        return total;
+        } 
+        // Para sobremesas, assume-se que não há variação de preço, apenas o valor
+        return total + item.value;
       }, 0),
   },
   actions: {
@@ -32,6 +33,12 @@ export const useCartStore = defineStore("cart", {
     // Adicionar um aperitivo ao carrinho
     addAppetizerToCart(appetizer: AppetizersModel[number], size: "small" | "large") {
       const cartItem = { ...appetizer, size };
+      this.cart.push(cartItem);
+    },
+    // Adicionar uma sobremesa ao carrinho
+    addDessertsToCart(dessert: DessertsModel[number]) {
+      // A sobremesa é adicionada diretamente sem o uso de 'size', já que esse campo não existe para sobremesas
+      const cartItem = { ...dessert };
       this.cart.push(cartItem);
     },
     // Remover item genérico do carrinho
