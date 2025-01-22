@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import { PaymentModel, OrderItem, OrderRequest } from "@/protocols";
+import { useCartStore } from "../../store/cartStore"; // Importe a store do carrinho
+import { PaymentModel, OrderRequest } from "@/protocols";
 
-// Estado reativo para armazenar itens do pedido
-const items = ref<OrderItem[]>([
-  { title: "Hambúrguer X", value: 28 },
-  { title: "Refrigerante", value: 10 },
-]);
+// Obtenha a store do carrinho
+const cartStore = useCartStore();
 
 // Estado reativo para as opções de pagamento e a opção selecionada
 const paymentModel = ref<PaymentModel[]>([]);
@@ -31,7 +29,10 @@ const finalizeOrder = async () => {
   }
 
   const orderData: OrderRequest = {
-    items: items.value,
+    items: cartStore.cart.map((item) => ({
+      title: item.title,
+      value: "type" in item ? (item.type === "single" ? item.values.single : item.values.combo) : (item.size === "small" ? item.values.small! : item.values.large!),
+    })),
     paymentModel: selectedPaymentModel.value,
   };
 
@@ -39,10 +40,20 @@ const finalizeOrder = async () => {
     const response = await axios.post("https://burgerlivery-api.vercel.app/order/create-order", orderData);
     alert("Pedido realizado com sucesso!");
     console.log("Resposta do pedido:", response.data);
+    cartStore.clearCart(); // Limpa o carrinho após finalizar o pedido
   } catch (error) {
     console.error("Erro ao finalizar pedido:", error);
   }
 };
+
+// Computed para calcular o total do pedido
+const totalOrder = computed(() =>
+  cartStore.cart.reduce(
+    (total, item) =>
+      total + ("type" in item ? (item.type === "single" ? item.values.single : item.values.combo) : (item.size === "small" ? item.values.small! : item.values.large!)),
+    0
+  )
+);
 
 // Carregar opções de pagamento ao montar o componente
 onMounted(loadPaymentModel);
@@ -55,16 +66,22 @@ const currency = (value: number): string => {
   }).format(value);
 };
 </script>
-
 <template>
   <div>
     <h1>Resumo do Pedido</h1>
     <ul>
-      <!-- Renderiza os itens do pedido -->
-      <li v-for="item in items" :key="item.title">
-        {{ item.title }} - {{ currency(item.value) }}
+      <!-- Renderiza os itens do carrinho, diferenciando hambúrgueres e aperitivos -->
+      <li v-for="item in cartStore.cart" :key="item.title">
+        {{ item.title }} 
+        <span v-if="item.type">{{ item.type }}</span> <!-- Exibe tipo do hambúrguer -->
+        <span v-if="item.size">{{ item.size }}</span> <!-- Exibe tamanho do aperitivo -->
+        - {{ currency("type" in item ? (item.type === "single" ? item.values.single : item.values.combo) : (item.size === "small" ? item.values.small! : item.values.large!)) }}
       </li>
     </ul>
+
+    <div class="order-total">
+      <strong>Total do Pedido:</strong> {{ currency(totalOrder) }}
+    </div>
 
     <h2>Forma de Pagamento</h2>
     <div>

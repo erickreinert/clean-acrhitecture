@@ -1,70 +1,40 @@
 <script setup lang="ts">
 import { defineProps, PropType, ref, onMounted } from "vue";
-import axios from "axios";
-import { faShoppingCart, faTrash, faArrowLeft, faArrowRight, faCreditCard } from "@fortawesome/free-solid-svg-icons"; // Ícones
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; // Componente de ícones
-import { useRouter } from "vue-router"; // Importar para navegação
+// import axios from "axios";
+import { faShoppingCart, faTrash, faArrowLeft, faArrowRight, faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { useRouter } from "vue-router";
+import { useCartStore } from "../../store/cartStore";
 
-// Registrar os ícones no componente
-const components = { FontAwesomeIcon };
+import { Hamburgers, HamburgersModel } from "../../protocols";
 
-import { Hamburgers } from "../../protocols";
+const { hamburgers } = defineProps({
+    hamburgers: Object as PropType<Hamburgers>,
+  })
 
-const props = defineProps({
-  Hamburgers: {
-    type: Array as PropType<Hamburgers>,
-    required: true,
-  },
-});
-
-const hamburgers = ref<Hamburgers>([]);
-const cart = ref<Hamburgers>([]);
-
-const router = useRouter(); // Usar o roteador para navegação
+const listaHamburgers = ref<HamburgersModel>([]);
+const cartStore = useCartStore();
+const router = useRouter();
 
 // Função para listar os hambúrgueres
 const listarHamburgers = async () => {
   try {
-    const response = await axios.get<Hamburgers>("https://burgerlivery-api.vercel.app/hamburgers");
-    hamburgers.value = response.data;
+    // const response = await axios.get<Hamburgers>("https://burgerlivery-api.vercel.app/hamburgers");
+      const response=await hamburgers.get() 
+      listaHamburgers.value = response;
   } catch (error) {
     console.error("Erro ao buscar hambúrgueres:", error);
   }
 };
 
-// Função para adicionar ao carrinho
-const addToCart = (hamburger: Hamburgers[number], type: "single" | "combo") => {
-  const cartItem = { ...hamburger, type };
-  cart.value.push(cartItem);
-  console.log(`Hambúrguer (${type}) adicionado ao carrinho:`, hamburger);
-};
-
-// Função para remover do carrinho
-const removeFromCart = (index: number) => {
-  cart.value.splice(index, 1);
-  console.log("Item removido do carrinho:", cart.value);
-};
-
-// Função para ir à página home
-const goHome = () => {
-  router.push("/Home"); // Rota da tela inicial
-};
-
-// Função para avançar para a próxima tela
+// Navegar para a próxima tela
 const goToNextPage = () => {
-  router.push("/appetizers"); // Defina a próxima tela aqui (ex: /next)
+  router.push("/appetizers");
 };
 
-// Função para finalizar o pedido (ir para a tela de pagamento)
+// Finalizar o pedido
 const goToPayment = () => {
-  router.push({ name: "payment", query: { cartData: JSON.stringify(cart.value) } }); // Passando os dados do carrinho
-};
-
-// Função para calcular o total do carrinho
-const getCartTotal = () => {
-  return cart.value.reduce((total, item) => {
-    return total + (item.type === 'single' ? item.values.single : item.values.combo);
-  }, 0);
+  router.push({ name: "payment" });
 };
 
 onMounted(listarHamburgers);
@@ -74,7 +44,7 @@ onMounted(listarHamburgers);
   <div class="hamburger-container">
     <h1 class="title">Lista de Hambúrgueres</h1>
     <ul class="hamburger-list">
-      <li v-for="hamburger in hamburgers" :key="hamburger.id" class="hamburger-item">
+      <li v-for="hamburger in listaHamburgers" :key="hamburger.id" class="hamburger-item">
         <img
           v-if="hamburger.image && hamburger.image.length > 0"
           :src="hamburger.image[0]"
@@ -85,68 +55,70 @@ onMounted(listarHamburgers);
           <h2 class="hamburger-title">{{ hamburger.title }}</h2>
           <p class="hamburger-description">{{ hamburger.description }}</p>
 
-          <!-- Preço Single com ícone -->
           <div class="hamburger-prices">
-            <span class="price">
-              Preço (Single): {{ currency(hamburger.values.single) }}
-            </span>
+            <span class="price">Preço (Single): {{ hamburger.values.single }}</span>
             <FontAwesomeIcon
               class="cart-icon"
               :icon="faShoppingCart"
-              @click="addToCart(hamburger, 'single')"
+              @click="cartStore.addHamburgerToCart(hamburger, 'single')"
             />
           </div>
 
-          <!-- Preço Combo com ícone -->
           <div class="hamburger-prices">
-            <span class="price">
-              Preço (Combo): {{ currency(hamburger.values.combo) }}
-            </span>
+            <span class="price">Preço (Combo): {{ hamburger.values.combo }}</span>
             <FontAwesomeIcon
               class="cart-icon"
               :icon="faShoppingCart"
-              @click="addToCart(hamburger, 'combo')"
+              @click="cartStore.addHamburgerToCart(hamburger, 'combo')"
             />
           </div>
         </div>
       </li>
     </ul>
 
-    <!-- Botões de navegação -->
     <div class="buttons-container">
-      <button class="button" @click="goHome">
+      <button class="button" @click="router.push('/Home')">
         <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para a Home
       </button>
       <button class="button" @click="goToNextPage">
         <FontAwesomeIcon :icon="faArrowRight" /> Avançar
       </button>
-      <button class="button" @click="goToPayment" :disabled="cart.length === 0">
+      <button class="button" @click="goToPayment" :disabled="cartStore.cart.length === 0">
         <FontAwesomeIcon :icon="faCreditCard" /> Finalizar Pedido
       </button>
     </div>
   </div>
 
-  <!-- Exibição do carrinho -->
   <div class="cart-container">
-    <h2 class="cart-title">Resumo do Pedido</h2>
-    <ul class="cart-list">
-      <li v-for="(item, index) in cart" :key="index" class="cart-item">
-        <span>{{ item.title }} ({{ item.type }})</span>
-        <span class="cart-price">{{ currency(item.type === 'single' ? item.values.single : item.values.combo) }}</span>
-        <!-- Botão de excluir do carrinho -->
-        <FontAwesomeIcon
-          class="remove-icon"
-          :icon="faTrash"
-          @click="removeFromCart(index)"
-        />
-      </li>
-    </ul>
-    <div class="cart-total">
-      <span>Total:</span>
-      <span class="total-price">{{ currency(getCartTotal()) }}</span>
-    </div>
+  <h2 class="cart-title">Resumo do Pedido</h2>
+  <ul class="cart-list">
+    <li v-for="(item, index) in cartStore.cart" :key="index" class="cart-item">
+      <span>{{ item.title }} 
+        <!-- Exibe o tipo para hambúrgueres e tamanho para aperitivos -->
+        <span v-if="item.type">({{ item.type }})</span> 
+        <span v-if="item.size">({{ item.size }})</span>
+      </span>
+      <span class="cart-price">
+        <!-- Exibe o valor dependendo do tipo do item (hambúrguer ou aperitivo) -->
+        {{ item.type 
+          ? (item.type === "single" ? item.values.single : item.values.combo) 
+          : (item.size === "small" ? item.values.small : item.values.large) }}
+      </span>
+      <FontAwesomeIcon
+        class="remove-icon"
+        :icon="faTrash"
+        @click="cartStore.removeFromCart(index)"
+      />
+    </li>
+  </ul>
+  <div class="cart-total">
+    <span>Total:</span>
+    <span class="total-price">{{ cartStore.cartTotal }}</span>
   </div>
+</div>
+
 </template>
+
 
 <script lang="ts">
 // Função auxiliar para formatar valores monetários
