@@ -307,7 +307,7 @@ export const currency = (value: number): string => {
 }
 
 .button {
-  background-color: #28a745;
+  background-color: #1d0eec;
   color: white;
   font-size: 18px;
   padding: 10px 20px;
@@ -320,15 +320,15 @@ export const currency = (value: number): string => {
 }
 
 .button:disabled {
-  background-color: #6c757d;
+  background-color: #6960ec;
   cursor: not-allowed;
 }
 
 .button:hover {
-  background-color: #218838;
+  background-color: #6960ec;
 }
 
 .button:disabled:hover {
-  background-color: #6c757d;
+  background-color: #6960ec;
 }
 </style>

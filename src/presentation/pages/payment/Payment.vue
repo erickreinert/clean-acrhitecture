@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, defineProps } from "vue";
 import axios from "axios";
-import { useCartStore } from "../../store/cartStore"; // Importe a store do carrinho
+import { useCartStore } from "../../store/cartStore";
 import { PaymentModel, Payment } from "../../protocols";
+import { faArrowLeft, faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { useRouter } from "vue-router";
 
 const { payment } = defineProps({
   payment: Object as PropType<Payment>,
-})
+});
 
 // Obtenha a store do carrinho
 const cartStore = useCartStore();
@@ -19,7 +22,7 @@ const selectedPaymentModel = ref<string>("");
 const loadPaymentModel = async () => {
   try {
     const response = await payment.get();
-    listaPayment.value = response; // Atualiza as opções de pagamento
+    listaPayment.value = response;
   } catch (error) {
     console.error("Erro ao carregar opções de pagamento:", error);
   }
@@ -32,15 +35,14 @@ const finalizeOrder = async () => {
     return;
   }
 
-  const orderData: OrderRequest = {
+  const orderData = {
     items: cartStore.cart.map((item) => ({
       title: item.title,
       value: "type" in item 
         ? (item.type === "single" ? item.values.single : item.values.combo) 
         : ("size" in item 
           ? (item.size === "small" ? item.values.small : item.values.large)
-          : item.value // Para bebidas
-        ),
+          : item.value),
     })),
     paymentModel: selectedPaymentModel.value,
   };
@@ -48,7 +50,6 @@ const finalizeOrder = async () => {
   try {
     const response = await axios.post("https://burgerlivery-api.vercel.app/order/create-order", orderData);
     alert("Pedido realizado com sucesso!");
-    console.log("Resposta do pedido:", response.data);
     cartStore.clearCart(); // Limpa o carrinho após finalizar o pedido
   } catch (error) {
     console.error("Erro ao finalizar pedido:", error);
@@ -79,83 +80,196 @@ const currency = (value: number): string => {
     currency: "BRL",
   }).format(value);
 };
+
+// Navegação
+const router = useRouter();
+const goBack = () => {
+  router.push("/Categories");
+};
 </script>
 
 <template>
-  <div>
-    <h1>Resumo do Pedido</h1>
-    <ul>
-      <!-- Renderiza os itens do carrinho, diferenciando hambúrgueres, aperitivos e bebidas -->
-      <li v-for="item in cartStore.cart" :key="item.title">
-        {{ item.title }} 
-        <span v-if="item.type">{{ item.type }}</span> <!-- Exibe tipo do hambúrguer -->
-        <span v-if="item.size">{{ item.size }}</span> <!-- Exibe tamanho do aperitivo -->
-        <span v-if="item.value">{{ currency(item.value) }}</span> <!-- Exibe preço da bebida -->
-        - {{ currency("type" in item 
-          ? (item.type === "single" ? item.values.single : item.values.combo) 
-          : ("size" in item 
-              ? (item.size === "small" ? item.values.small! : item.values.large!) 
-              : item.value)) }}
+  <div class="payment-container">
+    <h2 class="cart-title">Resumo do Pedido</h2>
+    <ul class="cart-list">
+      <li v-for="(item, index) in cartStore.cart" :key="index" class="cart-item">
+        <span>{{ item.title }}
+        <!-- Exibe o tipo para hambúrgueres e tamanho para aperitivos -->
+        <span v-if="item.type">({{ item.type }})</span> 
+        <span v-if="item.size">({{ item.size }})</span>
+        </span>
+        <span class="cart-price">
+        <!-- Exibe o valor dependendo do tipo do item (hambúrguer, aperitivo, bebida) -->
+        {{ item.type 
+         ? currency(item.type === "single" ? item.values.single : item.values.combo) 
+         : item.size 
+         ? currency(item.size === "small" ? item.values.small : item.values.large) 
+         : currency(item.value) 
+        }}
+        </span>
+        <FontAwesomeIcon
+          class="remove-icon"
+          :icon="faTrash"
+          @click="cartStore.removeFromCart(index)"
+        />
       </li>
     </ul>
-
     <div class="order-total">
       <strong>Total do Pedido:</strong> {{ currency(totalOrder) }}
     </div>
 
-    <h2>Forma de Pagamento</h2>
-    <div>
-      <!-- Renderiza as opções de pagamento -->
-      <label
-        v-for="option in listaPayment"
-        :key="option.id"
-        class="payment-option"
-      >
-        <input
-          type="radio"
-          :value="option.text"
-          v-model="selectedPaymentModel"
-        />
+    <h2 class="payment-title">Forma de Pagamento</h2>
+    <div class="payment-options">
+      <label v-for="option in listaPayment" :key="option.id" class="payment-option">
+        <input type="radio" :value="option.text" v-model="selectedPaymentModel" />
         {{ option.text }} - {{ currency(option.value) }}
       </label>
     </div>
 
-    <button @click="finalizeOrder" class="finalize-button">Finalizar Pedido</button>
+    <div class="buttons-container">
+      <button class="button" @click="goBack">
+        <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para a Início
+      </button>
+      <button class="button" @click="finalizeOrder">
+        <FontAwesomeIcon :icon="faCreditCard" /> Confirmar Pedido
+      </button>
+    </div>
   </div>
+
 </template>
 
 <style scoped>
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+.payment-container {
+  font-family: 'Arial', sans-serif;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color:#fff;
+  position: relative;
+  background-image: url('/assets/images/pagamento.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-ul {
+.title {
+  text-align: center;
+  font-size: 36px;
+  color: #fff;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.cart-title {
+  text-align: center;
   list-style: none;
   padding: 0;
+  color: #fff;
 }
 
-li {
-  margin-bottom: 0.5rem;
+.cart-list {
+  list-style: none;
+  padding: 5;
+  color: #fff;
+}
+
+.cart-item {
+  margin-bottom: 10px;
+}
+
+.order-total {
+  text-align: center;
+  font-size: 20px;
+  color: #fff;
+}
+
+.payment-title {
+  text-align: center;
+  font-size: 20px;
+  color: #fff;
+  margin-top: 20px;
 }
 
 .payment-option {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 18px;
   cursor: pointer;
 }
 
-.finalize-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #007bff;
+.payment-options {
+  padding: 25px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.button {
+  background-color: #1d0eec;
   color: white;
-  border: none;
+  font-size: 18px;
+  padding: 10px 20px;
   border-radius: 5px;
+  border: none;
   cursor: pointer;
+  transition: background-color 0.3s;
+  flex: 1;
+  margin: 0 10px;
 }
 
-.finalize-button:hover {
-  background-color: #0056b3;
+.button:disabled {
+  background-color: #6960ec;
+  cursor: not-allowed;
+}
+
+.button:hover {
+  background-color: #6960ec;
+}
+
+.cart-container {
+  position: fixed;
+  top: 200px;
+  right: 15px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 50px;
+  max-width: 500px;
+  width: 100%;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.cart-title {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.cart-price {
+  color: #fff;
+  font-size: 18px;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.total-price {
+  font-weight: bold;
+  color: #fff;
 }
 </style>
