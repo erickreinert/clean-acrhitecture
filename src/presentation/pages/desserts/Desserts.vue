@@ -35,15 +35,8 @@ const currency = (value: number): string => {
   }).format(value);
 };
 
-
-const addToCart = (dessert: any) => {
-  console.log("Adicionando ao carrinho:", dessert); // Log de depuração
-  cartStore.addToCart({
-    id: dessert.id,
-    title: dessert.title,
-    value: dessert.value,
-    type: "dessert",
-  });
+const addToCart = (dessert) => {
+  cartStore.addDessertToCart(dessert); // Usa a ação de adicionar sobremesa do Pinia
 };
 
 const goToNextPage = () => {
@@ -64,8 +57,8 @@ onMounted(listarDesserts);
       <li v-for="dessert in listaDesserts" :key="dessert.id" class="dessert-item">
         <img :src="dessert.image" alt="Imagem da sobremesa" class="dessert-image" />
         <div class="dessert-info">
-          <h2 class="dessert-title">{{ dessert.title }}</h2>
-          <p class="dessert-description">{{ dessert.description }}</p>
+          <h2 class="dessert-title">{{ dessert.text }}</h2>
+          <p class="dessert-description">{{ dessert.text }}</p>
           <div class="dessert-bottom">
             <span class="dessert-price">{{ currency(dessert.value) }}</span>
             <FontAwesomeIcon
@@ -97,8 +90,20 @@ onMounted(listarDesserts);
     <h2 class="cart-title">Resumo do Pedido</h2>
     <ul class="cart-list">
       <li v-for="(item, index) in cartStore.cart" :key="index" class="cart-item">
-        <span>{{ item.title }}</span>
-        <span class="cart-price">{{ currency(item.value) }}</span>
+        <span>{{ item.title }}
+        <!-- Exibe o tipo para hambúrgueres e tamanho para aperitivos -->
+        <span v-if="item.type">({{ item.type }})</span> 
+        <span v-if="item.size">({{ item.size }})</span>
+        </span>
+        <span class="cart-price">
+        <!-- Exibe o valor dependendo do tipo do item (hambúrguer, aperitivo, bebida) -->
+        {{ item.type 
+         ? currency(item.type === "single" ? item.values.single : item.values.combo) 
+         : item.size 
+         ? currency(item.size === "small" ? item.values.small : item.values.large) 
+         : currency(item.value) 
+        }}
+        </span>
         <FontAwesomeIcon
           class="remove-icon"
           :icon="faTrash"

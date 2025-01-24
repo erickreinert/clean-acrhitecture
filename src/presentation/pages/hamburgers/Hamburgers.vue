@@ -96,16 +96,19 @@ onMounted(listarHamburgers);
   <h2 class="cart-title">Resumo do Pedido</h2>
   <ul class="cart-list">
     <li v-for="(item, index) in cartStore.cart" :key="index" class="cart-item">
-      <span>{{ item.title }} 
-        <!-- Exibe o tipo para hambúrgueres e tamanho para aperitivos -->
-        <span v-if="item.type">({{ item.type }})</span> 
-        <span v-if="item.size">({{ item.size }})</span>
+      <span>{{ item.title }}
+      <!-- Exibe o tipo para hambúrgueres e tamanho para aperitivos -->
+      <span v-if="item.type">({{ item.type }})</span> 
+      <span v-if="item.size">({{ item.size }})</span>
       </span>
       <span class="cart-price">
-        <!-- Exibe o valor dependendo do tipo do item (hambúrguer ou aperitivo) -->
-        {{ item.type 
-          ? currency(item.type === "single" ? item.values.single : item.values.combo) 
-          : currency(item.size === "small" ? item.values.small : item.values.large) }}
+      <!-- Exibe o valor dependendo do tipo do item (hambúrguer, aperitivo, bebida) -->
+      {{ item.type 
+       ? currency(item.type === "single" ? item.values.single : item.values.combo) 
+       : item.size 
+       ? currency(item.size === "small" ? item.values.small : item.values.large) 
+       : currency(item.value) 
+      }}
       </span>
       <FontAwesomeIcon
         class="remove-icon"

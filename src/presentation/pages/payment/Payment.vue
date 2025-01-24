@@ -6,7 +6,7 @@ import { PaymentModel, Payment } from "../../protocols";
 
 const { payment } = defineProps({
   payment: Object as PropType<Payment>,
-  })
+})
 
 // Obtenha a store do carrinho
 const cartStore = useCartStore();
@@ -18,8 +18,7 @@ const selectedPaymentModel = ref<string>("");
 // Carregar opções de pagamento
 const loadPaymentModel = async () => {
   try {
-    const response = await payment.get()
-    alert(JSON.stringify(response))
+    const response = await payment.get();
     listaPayment.value = response; // Atualiza as opções de pagamento
   } catch (error) {
     console.error("Erro ao carregar opções de pagamento:", error);
@@ -36,7 +35,12 @@ const finalizeOrder = async () => {
   const orderData: OrderRequest = {
     items: cartStore.cart.map((item) => ({
       title: item.title,
-      value: "type" in item ? (item.type === "single" ? item.values.single : item.values.combo) : (item.size === "small" ? item.values.small! : item.values.large!),
+      value: "type" in item 
+        ? (item.type === "single" ? item.values.single : item.values.combo) 
+        : ("size" in item 
+          ? (item.size === "small" ? item.values.small : item.values.large)
+          : item.value // Para bebidas
+        ),
     })),
     paymentModel: selectedPaymentModel.value,
   };
@@ -55,9 +59,14 @@ const finalizeOrder = async () => {
 const totalOrder = computed(() =>
   cartStore.cart.reduce(
     (total, item) =>
-      total + ("type" in item ? (item.type === "single" ? item.values.single : item.values.combo) : (item.size === "small" ? item.values.small! : item.values.large!)),
-    0
-  )
+      total + ("type" in item 
+        ? (item.type === "single" ? item.values.single : item.values.combo) 
+        : ("size" in item 
+            ? (item.size === "small" ? item.values.small : item.values.large) 
+            : item.value // Para bebidas
+        )
+    ), 
+  0)
 );
 
 // Carregar opções de pagamento ao montar o componente
@@ -71,16 +80,22 @@ const currency = (value: number): string => {
   }).format(value);
 };
 </script>
+
 <template>
   <div>
     <h1>Resumo do Pedido</h1>
     <ul>
-      <!-- Renderiza os itens do carrinho, diferenciando hambúrgueres e aperitivos -->
+      <!-- Renderiza os itens do carrinho, diferenciando hambúrgueres, aperitivos e bebidas -->
       <li v-for="item in cartStore.cart" :key="item.title">
         {{ item.title }} 
         <span v-if="item.type">{{ item.type }}</span> <!-- Exibe tipo do hambúrguer -->
         <span v-if="item.size">{{ item.size }}</span> <!-- Exibe tamanho do aperitivo -->
-        - {{ currency("type" in item ? (item.type === "single" ? item.values.single : item.values.combo) : (item.size === "small" ? item.values.small! : item.values.large!)) }}
+        <span v-if="item.value">{{ currency(item.value) }}</span> <!-- Exibe preço da bebida -->
+        - {{ currency("type" in item 
+          ? (item.type === "single" ? item.values.single : item.values.combo) 
+          : ("size" in item 
+              ? (item.size === "small" ? item.values.small! : item.values.large!) 
+              : item.value)) }}
       </li>
     </ul>
 

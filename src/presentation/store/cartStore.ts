@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
-import type { HamburgersModel } from "../protocols";
-import type { AppetizersModel } from "../protocols";
-import type { DessertsModel } from "../protocols";
+import type { HamburgersModel, AppetizersModel, DessertsModel, BeveragesModel } from "../protocols";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
     cart: [] as Array<
       (HamburgersModel[number] & { type: "single" | "combo" }) |
-      (AppetizersModel[number] & { size: "small" | "large" }) 
+      (AppetizersModel[number] & { size: "small" | "large" }) |
+      DessertsModel[number] |
+      BeveragesModel[number]
     >,
   }),
   getters: {
@@ -18,10 +18,10 @@ export const useCartStore = defineStore("cart", {
           return total + (item.type === "single" ? item.values.single : item.values.combo);
         } else if ("size" in item) {
           // É um aperitivo
-          return total + (item.size === "small" ? item.values.small : item.values.large);
-        } 
-        // Para sobremesas, assume-se que não há variação de preço, apenas o valor
-        return total + item.value;
+          return total + (item.size === "small" && item.values.small != null ? item.values.small : (item.size === "large" && item.values.large != null ? item.values.large : 0));
+        } else {
+          return total + item.value;
+        }
       }, 0),
   },
   actions: {
@@ -36,12 +36,26 @@ export const useCartStore = defineStore("cart", {
       this.cart.push(cartItem);
     },
     // Adicionar uma sobremesa ao carrinho
-    addDessertsToCart(dessert: DessertsModel[number]) {
-      // A sobremesa é adicionada diretamente sem o uso de 'size', já que esse campo não existe para sobremesas
+    addDessertToCart(dessert: DessertsModel[number]) {
       const cartItem = { ...dessert };
-      this.cart.push(cartItem);
+      this.cart.push(cartItem);   
     },
-    // Remover item genérico do carrinho
+    // Adicionar uma bebida ao carrinho
+    addBeverageToCart(beverage: BeveragesModel[number], quantity: number = 1) {
+      const existingBeverage = this.cart.find(
+        (item) => "quantity" in item && item.id === beverage.id
+      );
+
+      if (existingBeverage) {
+        // Se a bebida já estiver no carrinho, atualiza a quantidade
+        existingBeverage.quantity += quantity;
+      } else {
+        // Caso contrário, adiciona a bebida com a quantidade inicial
+        const cartItem = { ...beverage, quantity };
+        this.cart.push(cartItem);
+      }
+    },
+    // Remover item do carrinho
     removeFromCart(index: number) {
       this.cart.splice(index, 1);
     },
@@ -50,13 +64,5 @@ export const useCartStore = defineStore("cart", {
       this.cart = [];
     },
   },
-  persist: {
-    enabled: true,
-    strategies: [
-      {
-        key: "cart",
-        storage: localStorage,
-      },
-    ],
-  },
+  persist: true, // Ativa a persistência diretamente aqui
 });
