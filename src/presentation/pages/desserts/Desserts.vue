@@ -1,26 +1,30 @@
 <script setup lang="ts">
 import { defineProps, PropType, ref, onMounted } from "vue";
-import axios from "axios";
 import { faShoppingCart, faTrash, faArrowLeft, faArrowRight, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useRouter } from "vue-router";
 import { useCartStore } from "../../store/cartStore";
+import {Desserts, DessertsModel} from "../../protocols"
 
-const router = useRouter();
-const cartStore = useCartStore();
 
-const props = defineProps({
-  Desserts: Object as PropType<Desserts>,
-});
+const { desserts } = defineProps({
+  desserts: Object as PropType<Desserts>,
+  })
 
-const desserts = ref([]);
+  const router = useRouter();
+  const cartStore = useCartStore();
+
+const listaDesserts = ref<DessertsModel>([])
 
 const listarDesserts = async () => {
-  try {
-    const response = await axios.get("https://burgerlivery-api.vercel.app/desserts");
-    desserts.value = response.data;
-  } catch (error) {
-    console.error("Erro ao buscar desserts:", error);
+  if (desserts) {
+
+      try {
+        const response = await desserts.get();
+        listaDesserts.value = response;
+      } catch (error) {
+        console.error("Erro ao buscar desserts:", error);
+      }
   }
 };
 
@@ -57,7 +61,7 @@ onMounted(listarDesserts);
   <div class="desserts-container">
     <h1 class="title">Sobremesas</h1>
     <ul class="desserts-list">
-      <li v-for="dessert in desserts" :key="dessert.id" class="dessert-item">
+      <li v-for="dessert in listaDesserts" :key="dessert.id" class="dessert-item">
         <img :src="dessert.image" alt="Imagem da sobremesa" class="dessert-image" />
         <div class="dessert-info">
           <h2 class="dessert-title">{{ dessert.title }}</h2>

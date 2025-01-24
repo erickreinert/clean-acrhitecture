@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, defineProps } from "vue";
 import axios from "axios";
 import { useCartStore } from "../../store/cartStore"; // Importe a store do carrinho
-import { PaymentModel, OrderRequest } from "@/protocols";
+import { PaymentModel, Payment } from "../../protocols";
+
+const { payment } = defineProps({
+  payment: Object as PropType<Payment>,
+  })
 
 // Obtenha a store do carrinho
 const cartStore = useCartStore();
 
 // Estado reativo para as opções de pagamento e a opção selecionada
-const paymentModel = ref<PaymentModel[]>([]);
+const listaPayment = ref<PaymentModel[]>([]);
 const selectedPaymentModel = ref<string>("");
 
 // Carregar opções de pagamento
 const loadPaymentModel = async () => {
   try {
-    const response = await axios.get<PaymentModel[]>("https://burgerlivery-api.vercel.app/payment/options");
-    paymentModel.value = response.data; // Atualiza as opções de pagamento
+    const response = await payment.get()
+    alert(JSON.stringify(response))
+    listaPayment.value = response; // Atualiza as opções de pagamento
   } catch (error) {
     console.error("Erro ao carregar opções de pagamento:", error);
   }
@@ -87,7 +92,7 @@ const currency = (value: number): string => {
     <div>
       <!-- Renderiza as opções de pagamento -->
       <label
-        v-for="option in paymentModel"
+        v-for="option in listaPayment"
         :key="option.id"
         class="payment-option"
       >

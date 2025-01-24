@@ -1,7 +1,14 @@
-export interface PaymentModel {
+export type PaymentModel = {
     id: string;
     value: number;
     text: string;
   }
   
-  export type PaymentModelResponse = PaymentModel[];
+  export namespace Payment {
+    export type Model = PaymentModel
+  }
+  
+  export interface Payment {
+    get(): Promise<Payment.Model>
+  }
+  

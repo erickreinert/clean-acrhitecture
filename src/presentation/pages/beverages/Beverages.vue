@@ -1,26 +1,26 @@
 
 <script setup lang="ts">
 import { defineProps, PropType, ref, onMounted } from "vue";
-import axios from "axios";
+import { Beverages, BeveragesModel } from "../../protocols";
 
-// Define as propriedades recebidas pelo componente
-import { Beverages } from "../../protocols";
-
-const props = defineProps({
-    Beverages: Object as PropType<Beverages>,
+const {beverages} = defineProps({
+    beverages: Object as PropType<Beverages>,
 });
 
-const beverages = ref<Beverage[]>([]);
+const listaBeverages = ref<BeveragesModel>([]);
 
 // Função para listar as bebidas
 const listarBeverages = async () => {
-  try {
-    const response = await axios.get<Beverage[]>("https://burgerlivery-api.vercel.app/beverages");
-    beverages.value = response.data; // Atualiza o estado reativo com os dados da API
-  } catch (error) {
-    console.error("Erro ao buscar beverages:", error);
-  } finally {
-    console.log("Consulta concluída!");
+  if (beverages) {
+
+    try {
+      const response = await beverages.get();
+      listaBeverages.value = response; 
+    } catch (error) {
+      console.error("Erro ao buscar beverages:", error);
+    } finally {
+      console.log("Consulta concluída!");
+    }
   }
 };
 
@@ -41,7 +41,7 @@ onMounted(listarBeverages);
       <h1 class="title">Beverages</h1>
       <ul class="beverages-list">
         <!-- Renderiza a lista de bebidas -->
-        <li v-for="beverage in beverages" :key="beverage.id" class="beverage-item">
+        <li v-for="beverage in listaBeverages" :key="beverage.id" class="beverage-item">
           <div class="beverage-card">
             <img :src="beverage.image" alt="Imagem da bebida" class="beverage-image" />
             <div class="beverage-details">

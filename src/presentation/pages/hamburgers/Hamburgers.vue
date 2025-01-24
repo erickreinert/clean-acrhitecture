@@ -18,12 +18,15 @@ const router = useRouter();
 
 // Função para listar os hambúrgueres
 const listarHamburgers = async () => {
-  try {
-    // const response = await axios.get<Hamburgers>("https://burgerlivery-api.vercel.app/hamburgers");
-      const response=await hamburgers.get() 
-      listaHamburgers.value = response;
-  } catch (error) {
-    console.error("Erro ao buscar hambúrgueres:", error);
+  if (hamburgers) {
+
+    try {
+      // const response = await axios.get<Hamburgers>("https://burgerlivery-api.vercel.app/hamburgers");
+        const response = await hamburgers.get() 
+        listaHamburgers.value = response;
+    } catch (error) {
+      console.error("Erro ao buscar hambúrgueres:", error);
+    }
   }
 };
 

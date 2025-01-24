@@ -9,7 +9,7 @@ export const apiRoutes = {
   appetizers: `${baseUrl}/appetizers`,
   beverages: `${baseUrl}/beverages`,
   desserts: `${baseUrl}/desserts`,
-  payment: `${baseUrl}/payment`,
+  payment: `${baseUrl}/payment/options`,
 };
 
 

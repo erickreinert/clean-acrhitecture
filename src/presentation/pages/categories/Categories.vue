@@ -4,27 +4,29 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 
 // Define as propriedades recebidas pelo componente
-import { Categories } from "../../protocols";
+import { Categories, CategoriesModel } from "../../protocols";
 
-const props = defineProps({
-  Categories: Object as PropType<Categories>,
+const {categories} = defineProps({
+  categories: Object as PropType<Categories>,
 });
 
-// Estado reativo para armazenar as categorias
-const categories = ref([]);
+const listaCategories = ref<CategoriesModel>([])
 
 // Instância do Vue Router para navegação
 const router = useRouter();
 
 // Função para listar as categorias usando a propriedade injetada
 const listarCategories = async () => {
-  try {
-    const response = await axios.get("https://burgerlivery-api.vercel.app/categories");
-    categories.value = response.data; // Atualiza o estado reativo
-  } catch (error) {
-    console.error("Erro ao buscar categorias:", error);
-  } finally {
-    console.log("Consulta concluída!");
+  if (categories) {
+
+    try {
+      const response = await categories.get();
+      listaCategories.value = response; // Atualiza o estado reativo
+    } catch (error) {
+      console.error("Erro ao buscar categorias:", error);
+    } finally {
+      console.log("Consulta concluída!");
+    }
   }
 };
 
@@ -62,7 +64,7 @@ onMounted(listarCategories);
     <ul class="categories-list">
       <!-- Renderiza a lista de categorias -->
       <li
-        v-for="category in categories"
+        v-for="category in listaCategories"
         :key="category.id"
         class="category-item"
         @click="navigateToCategory(category.text)"
