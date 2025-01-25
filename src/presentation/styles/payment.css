@@ -1,16 +1,23 @@
-.payment-container {
-  font-family: 'Arial', sans-serif;
-  height: 100vh;
-  width: 100%;
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  background-color:#fff;
+}
+
+.payment-container {
+  font-family: 'Arial', sans-serif;
+  height: 100vh; /* Altura de 100% da viewport */
+  width: 100%; /* Largura total */
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
   position: relative;
   background-image: url('/assets/images/pagamento.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-size: cover; /* Faz com que a imagem cubra o espaço todo */
+  background-position: center; /* Centraliza a imagem */
+  background-repeat: no-repeat; /* Evita repetição */
 }
+
 
 .title {
   text-align: center;
@@ -31,6 +38,7 @@
   list-style: none;
   padding: 5;
   color: #fff;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .cart-item {
@@ -40,13 +48,15 @@
 .order-total {
   text-align: center;
   font-size: 20px;
-  color: #1d0eec;
+  color: #000000;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .payment-title {
   text-align: center;
   font-size: 20px;
-  color: #1d0eec;
+  color: #000000;
+  background-color: rgba(255, 255, 255, 0.3);
   margin-top: 20px;
 }
 
@@ -92,7 +102,8 @@
 
 .cart-container {
   position: fixed;
-  top: 200px;
+  top: 70px;
+  bottom: 100px; /* Adiciona distância da parte inferior */
   right: 15px;
   background-color: rgba(255, 255, 255, 0.7);
   padding: 20px;
@@ -101,7 +112,10 @@
   width: 100%;
   z-index: 10;
   overflow-y: auto;
+  padding-bottom: 40px; /* Espaço interno na parte inferior */
+  margin-bottom: 20px;  /* Espaço externo na parte inferior */
 }
+
 
 .cart-title {
   font-size: 24px;
@@ -116,7 +130,7 @@
 }
 
 .cart-price {
-  color: #fff;
+  color: #070600;
   font-size: 18px;
 }
 
@@ -129,5 +143,5 @@
 
 .total-price {
   font-weight: bold;
-  color: #fff;
+  color: #070600;
 }

@@ -95,15 +95,18 @@ html, body {
 /* Resumo do Pedido */
 .cart-container {
   position: fixed;
-  top: 200px;
+  top: 70px;
+  bottom: 100px; /* Adiciona distância da parte inferior */
   right: 15px;
-  background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
+  background-color: rgba(255, 255, 255, 0.7);
   padding: 20px;
   border-radius: 50px;
   max-width: 500px;
   width: 100%;
   z-index: 10;
-  overflow-y: auto; 
+  overflow-y: auto;
+  padding-bottom: 40px; /* Espaço interno na parte inferior */
+  margin-bottom: 20px;  /* Espaço externo na parte inferior */
 }
 
 .cart-title {
