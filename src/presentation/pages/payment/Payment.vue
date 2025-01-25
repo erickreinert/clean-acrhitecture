@@ -78,8 +78,19 @@ const totalOrder = computed(() =>
   0)
 );
 
+const verificarAuthenticacao = async () => {
+  if (!currentAccount.get()) {
+    alert("Faça login antes!")
+    location.href = "/login"
+  } 
+}
+
 // Carregar opções de pagamento ao montar o componente
-onMounted(loadPaymentModel);
+onMounted(() => {
+    verificarAuthenticacao()
+    loadPaymentModel()
+  }
+);
 
 // Função auxiliar para formatar valores monetários
 const currency = (value: number): string => {

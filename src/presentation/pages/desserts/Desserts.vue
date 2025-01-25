@@ -7,9 +7,10 @@ import { useCartStore } from "../../store/cartStore";
 import {Desserts, DessertsModel} from "../../protocols"
 
 
-const { desserts } = defineProps({
+const { desserts, currentAccount } = defineProps({
   desserts: Object as PropType<Desserts>,
-  })
+  currentAccount: Function as PropType<any>,
+})
 
   const router = useRouter();
   const cartStore = useCartStore();
@@ -47,7 +48,20 @@ const goToPayment = () => {
   router.push({ name: "payment" });
 };
 
-onMounted(listarDesserts);
+const verificarAuthenticacao = async () => {
+  if (!currentAccount.get()) {
+    alert("Faça login antes!")
+    location.href = "/login"
+  } 
+}
+
+// Carregar opções de pagamento ao montar o componente
+onMounted(() => {
+    verificarAuthenticacao()
+    listarDesserts()
+  }
+);
+
 </script>
 
 <template>

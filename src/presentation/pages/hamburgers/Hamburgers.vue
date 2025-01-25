@@ -8,8 +8,10 @@ import { useCartStore } from "../../store/cartStore";
 
 import { Hamburgers, HamburgersModel } from "../../protocols";
 
-const { hamburgers } = defineProps({
-    hamburgers: Object as PropType<Hamburgers>,
+const { hamburgers, currentAccount } = defineProps({
+    hamburgers: Object as PropType<Hamburgers>,  
+    currentAccount: Function as PropType<any>,
+
   })
 
 const listaHamburgers = ref<HamburgersModel>([]);
@@ -40,7 +42,20 @@ const goToPayment = () => {
   router.push({ name: "payment" });
 };
 
-onMounted(listarHamburgers);
+const verificarAuthenticacao = async () => {
+  if (!currentAccount.get()) {
+    alert("Faça login antes!")
+    location.href = "/login"
+  } 
+}
+
+// Carregar opções de pagamento ao montar o componente
+onMounted(() => {
+    verificarAuthenticacao()
+    listarHamburgers()
+  }
+);
+
 </script>
 
 <template>

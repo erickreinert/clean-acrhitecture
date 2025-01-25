@@ -8,8 +8,9 @@ import { useCartStore } from "../../store/cartStore";
 import { faShoppingCart, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 
-const { beverages } = defineProps({
+const { beverages, currentAccount } = defineProps({
   beverages: Object as PropType<Beverages>,
+  currentAccount: Function as PropType<any>,
 });
 
 const listaBeverages = ref<BeveragesModel>([]);
@@ -47,8 +48,19 @@ const goToPayment = () => {
   router.push({ name: "payment" });
 };
 
-// Carregar bebidas ao montar o componente
-onMounted(listarBeverages);
+const verificarAuthenticacao = async () => {
+  if (!currentAccount.get()) {
+    alert("Faça login antes!")
+    location.href = "/login"
+  } 
+}
+
+// Carregar opções de pagamento ao montar o componente
+onMounted(() => {
+    verificarAuthenticacao()
+    listarBeverages()
+  }
+);
 </script>
 
 <template>

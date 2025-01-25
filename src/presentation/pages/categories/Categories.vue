@@ -6,8 +6,9 @@ import axios from "axios";
 // Define as propriedades recebidas pelo componente
 import { Categories, CategoriesModel } from "../../protocols";
 
-const {categories} = defineProps({
+const {categories, currentAccount} = defineProps({
   categories: Object as PropType<Categories>,
+  currentAccount: Function as PropType<any>
 });
 
 const listaCategories = ref<CategoriesModel>([])
@@ -53,8 +54,19 @@ const navigateToCategory = (category: string) => {
   }
 };
 
-// Carregar categorias ao montar o componente
-onMounted(listarCategories);
+const verificarAuthenticacao = async () => {
+  if (!currentAccount.get()) {
+    alert("Faça login antes!")
+    location.href = "/login"
+  } 
+}
+
+// Carregar opções de pagamento ao montar o componente
+onMounted(() => {
+    verificarAuthenticacao()
+    listarCategories()
+  }
+);
 </script>
 
 <template>

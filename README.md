@@ -3,8 +3,8 @@ Projeto Frontend utilizando camadas para separação de responsabilidades visand
 Baseado na abordagen do livro Clean Architecture, visando criar um arquitetura para projetos frontend.
 
 ## RM FIAP
-Erick Reinert - RM354669
-Fabio Franca  - RM354414
+Erick Reinert - RM354669  
+Fabio Franca  - RM354414  
 Jose Vitor    - RM354496
 
 ## Diagrama
