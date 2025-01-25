@@ -2,7 +2,7 @@
 import { defineProps, PropType, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import CustomAlert from "../../components/CustomAlert.vue";
-//import axios from "axios";
+import axios from "axios";
 
 // Define as propriedades recebidas pelo componente
 import { Categories, CategoriesModel } from "../../protocols";
@@ -16,7 +16,13 @@ const listaCategories = ref<CategoriesModel>([])
 
 // Instância do Vue Router para navegação
 const router = useRouter();
-const showCustomAlert = ref(false); // Estado do alerta
+const showCustomAlert = ref(false);
+const alertMessage = ref(''); // Mensagem que será exibida no alerta
+
+const onAlertClose = async () => {
+  showCustomAlert.value = false; // Fecha o alerta
+};
+
 
 // Função para listar as categorias usando a propriedade injetada
 const listarCategories = async () => {
@@ -40,8 +46,9 @@ const navigateToCategory = (category: string) => {
       router.push("/Beverages"); // Navega para a página de Bebidas
       break;
     case "combos":
-      showCustomAlert.value = true; // Exibe o alerta customizado
-      break;
+    alertMessage.value = `Produto indisponível, no momento.\nPor favor, explore os outros menus para realizar o seu pedido.\nAgradecemos a sua compreensão!`;
+    showCustomAlert.value = true;
+      return;
     case "sobremesas":
       router.push("/Desserts"); // Navega para a página de Sobremesas
       break;
@@ -88,14 +95,17 @@ onMounted(() => {
         </div>
       </li>
     </ul>
-    <!-- Alerta customizado -->
-    <CustomAlert v-if="showCustomAlert" :is-visible="showCustomAlert" @close="showCustomAlert = false">
-      Produto indisponível, no momento. <br />
-      Por favor, explore os outros menus  <br />
-      para realizar o seu pedido, <br />
-      Agradecemos a sua compreensão!
-    </CustomAlert>
+    <CustomAlert 
+      v-if="showCustomAlert" 
+      :key="alertMessage" 
+      :message="alertMessage" 
+      :isVisible="showCustomAlert" 
+      @close="onAlertClose" 
+    />
   </div>
 </template>
 
 <style src="../../styles/categories.css"></style>
+
+
+       
