@@ -3,7 +3,7 @@ html, body {
   margin: 0;
 }
 
-.hamburger-container {
+.beverages-container {
   font-family: 'Arial', sans-serif;
   height: 100%; /* Garantir que o contêiner ocupe 100% da altura da tela */
   width: 100%; 
@@ -11,7 +11,7 @@ html, body {
   padding: 0;
   border-radius: 0; /* Corrigir border-radius para 0 ou valor desejado */
   position: relative;
-  background-image: url('/assets/images/hambuger_page.jpg');
+  background-image: url('/assets/images/bebidas.jpg');
   background-size: cover;  /* Garantir que a imagem cubra todo o espaço */
   background-position: center; 
   background-repeat: no-repeat; 
@@ -25,12 +25,12 @@ html, body {
   font-weight: bold;
 }
 
-.hamburger-list {
+.beverages-list {
   list-style-type: none;
   padding: 0;
 }
 
-.hamburger-item {
+.beverage-item {
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
@@ -42,11 +42,7 @@ html, body {
   transition: transform 0.3s ease;
 }
 
-.hamburger-item:hover {
-  transform: translateY(-5px);
-}
-
-.hamburger-image {
+.beverage-image {
   width: 120px;
   height: 120px;
   object-fit: cover;
@@ -54,31 +50,35 @@ html, body {
   margin-right: 20px;
 }
 
-.hamburger-info {
-  flex-grow: 1;
+.beverage-details {
+  display: flex;
+  flex-direction: column;
 }
 
-.hamburger-title {
-  font-size: 24px;
+.beverage-title {
+  font-size: 20px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
-.hamburger-description {
+.beverage-description {
   font-size: 14px;
   color: #666;
   margin-bottom: 15px;
+  align-items: center;
 }
 
-.price {
-  font-size: 18px;
-  color: #28a745;
+.beverage-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.hamburger-prices {
+.beverage-price {
   font-size: 16px;
   font-weight: bold;
+  color: #28a745;
 }
 
 .cart-icon {
@@ -92,7 +92,7 @@ html, body {
   color: #ffd700;
   transform: scale(1.2);
 }
-
+/* Resumo do Pedido */
 .cart-container {
   position: fixed;
   top: 200px;
@@ -133,18 +133,6 @@ html, body {
   padding: 0;
 }
 
-.remove-icon {
-  color: #dc3545;
-  cursor: pointer;
-  font-size: 20px;
-  transition: transform 0.3s, color 0.3s;
-}
-
-.remove-icon:hover {
-  color: #c82333;
-  transform: scale(1.2);
-}
-
 .cart-total {
   display: flex;
   justify-content: space-between;
@@ -157,11 +145,23 @@ html, body {
   color: #0c0a01;
 }
 
+.remove-icon {
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 20px;
+  transition: transform 0.3s, color 0.3s;
+}
 
+.remove-icon:hover {
+  color: #c82333;
+  transform: scale(1.2);
+}
+
+/* Botões */
 .buttons-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .button {
@@ -183,9 +183,5 @@ html, body {
 }
 
 .button:hover {
-  background-color: #6960ec;
-}
-
-.button:disabled:hover {
   background-color: #6960ec;
 }

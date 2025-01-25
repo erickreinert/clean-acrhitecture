@@ -1,20 +1,16 @@
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
-.hamburger-container {
+.appetizer-container {
   font-family: 'Arial', sans-serif;
-  height: 100%; /* Garantir que o contêiner ocupe 100% da altura da tela */
+  height: 100vh; 
   width: 100%; 
   margin: 0;
   padding: 0;
-  border-radius: 0; /* Corrigir border-radius para 0 ou valor desejado */
+  border-radius: px;
   position: relative;
-  background-image: url('/assets/images/hambuger_page.jpg');
-  background-size: cover;  /* Garantir que a imagem cubra todo o espaço */
+  background-image: url('/assets/images/porcoes.jpg');
+  background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
+    
 }
 
 .title {
@@ -25,12 +21,12 @@ html, body {
   font-weight: bold;
 }
 
-.hamburger-list {
+.appetizer-list {
   list-style-type: none;
   padding: 0;
 }
 
-.hamburger-item {
+.appetizer-item {
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
@@ -42,11 +38,11 @@ html, body {
   transition: transform 0.3s ease;
 }
 
-.hamburger-item:hover {
+.appetizer-item:hover {
   transform: translateY(-5px);
 }
 
-.hamburger-image {
+.appetizer-image {
   width: 120px;
   height: 120px;
   object-fit: cover;
@@ -54,21 +50,26 @@ html, body {
   margin-right: 20px;
 }
 
-.hamburger-info {
+.appetizer-details {
   flex-grow: 1;
 }
 
-.hamburger-title {
+.appetizer-title {
   font-size: 24px;
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
 }
 
-.hamburger-description {
+.appetizer-description {
   font-size: 14px;
   color: #666;
   margin-bottom: 15px;
+}
+
+.appetizer-prices {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .price {
@@ -76,9 +77,11 @@ html, body {
   color: #28a745;
 }
 
-.hamburger-prices {
-  font-size: 16px;
-  font-weight: bold;
+.appetizer-prices {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .cart-icon {
@@ -156,7 +159,6 @@ html, body {
   font-weight: bold;
   color: #0c0a01;
 }
-
 
 .buttons-container {
   display: flex;

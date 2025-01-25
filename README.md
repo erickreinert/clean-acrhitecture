@@ -3,9 +3,9 @@ Projeto Frontend utilizando camadas para separação de responsabilidades visand
 Baseado na abordagen do livro Clean Architecture, visando criar um arquitetura para projetos frontend.
 
 ## RM FIAP
-Erick Reinert - RM354669  
-Fabio Franca  - RM354414  
-Jose Vitor    - RM354496
+Erick Reinert - RM354669  /
+Fabio Franca  - RM354414  /
+Jose Vitor    - RM354496  /
 
 ## Diagrama
 
@@ -27,7 +27,7 @@ Eu utilizei o **npm**, e os comandos serão baseados no mesmo.
 No terminal rode os comandos
 
 ```bash 
-git clone https://github.com/94AOJ/clean-acrhitecture.git
+git clone https://github.com/erickreinert/clean-acrhitecture.git
 ```
 E acesse o diretório do projeto
 
@@ -49,4 +49,12 @@ No terminal rode o comando
 npm run dev
 ```
 
+#Logins
+User 1
+login: eliane_almeida@gmail.com.br
+password: Prior8756@
+
+User 2
+login: manoeljuandapaz@gmail.com.br
+password: Pedra0143@
 

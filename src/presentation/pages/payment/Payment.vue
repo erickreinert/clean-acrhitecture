@@ -5,6 +5,7 @@ import { PaymentModel, Payment, Order, Authentication } from "../../protocols";
 import { faArrowLeft, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useRouter } from "vue-router";
+import CustomAlert from "../../components/CustomAlert.vue";
 
 const { payment, order, currentAccount } = defineProps({
   payment: Object as PropType<Payment>,
@@ -12,17 +13,26 @@ const { payment, order, currentAccount } = defineProps({
   currentAccount: Function as PropType<any>,
 });
 
-// Obtenha a store do carrinho
 const cartStore = useCartStore();
 
-// Estado reativo para as opções de pagamento e a opção selecionada
+const showCustomAlert = ref(false);
+const alertMessage = ref(''); // Mensagem que será exibida no alerta
+const alertType = ref(""); 
+
+const onAlertClose = async () => {
+  showCustomAlert.value = false; // Fecha o alerta
+  if (alertType.value === "success") {
+    router.push("/Categories"); // Só redireciona para categorias se o alerta for de sucesso
+  }
+};
+
+
 const listaPayment = ref<PaymentModel[]>([]);
 const selectedPaymentModel = ref<string>("");
 
-// Carregar opções de pagamento
+
 const loadPaymentModel = async () => {
   if (payment) {
-
     try {
       const response = await payment.get();
       listaPayment.value = response;
@@ -31,11 +41,10 @@ const loadPaymentModel = async () => {
     }
   }
 };
-
-// Finalizar pedido
 const finalizeOrder = async () => {
   if (!selectedPaymentModel.value) {
-    alert("Selecione uma opção de pagamento.");
+    alertMessage.value = "Selecione uma opção de pagamento. Por favor!";
+    showCustomAlert.value = true; // Exibe o alerta customizado
     return;
   }
 
@@ -52,47 +61,45 @@ const finalizeOrder = async () => {
   };
 
   try {
-    const token = currentAccount.get().token
+    const token = currentAccount.get().token;
     if (token) {
       const response = await order?.createOrder(orderData, token);
-      alert("Pedido realizado com sucesso!\nNúmero do pedido: " + response?.orderNumber);
+      // Exibe a mensagem de sucesso
+      alertMessage.value = `Pedido realizado com sucesso! Número do pedido: ${response?.orderNumber} !`;
+      showCustomAlert.value = true; 
+      alertType.value = "success";
+      cartStore.clearCart(); 
+      return; 
     }
-    cartStore.clearCart(); // Limpa o carrinho após finalizar o pedido
-    location.href = "/Categories"
   } catch (error) {
     console.error("Erro ao finalizar pedido:", error);
   }
 };
 
-// Computed para calcular o total do pedido
 const totalOrder = computed(() =>
   cartStore.cart.reduce(
     (total, item) =>
       total + ("type" in item 
         ? (item.type === "single" ? item.values.single : item.values.combo) 
         : ("size" in item 
-            ? (item.size === "small" ? item.values.small : item.values.large) 
-            : item.value // Para bebidas
-        )
+            ? (item.size === "small" ? item.values.small : Number(item.values.large))
+            : item.value)
     ), 
   0)
 );
 
 const verificarAuthenticacao = async () => {
   if (!currentAccount.get()) {
-    alert("Faça login antes!")
-    location.href = "/login"
+    alert("Faça login antes!");
+    location.href = "/login";
   } 
 }
 
-// Carregar opções de pagamento ao montar o componente
 onMounted(() => {
-    verificarAuthenticacao()
-    loadPaymentModel()
-  }
-);
+  verificarAuthenticacao();
+  loadPaymentModel();
+});
 
-// Função auxiliar para formatar valores monetários
 const currency = (value: number): string => {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -100,7 +107,6 @@ const currency = (value: number): string => {
   }).format(value);
 };
 
-// Navegação
 const router = useRouter();
 const goBack = () => {
   router.push("/Categories");
@@ -113,24 +119,17 @@ const goBack = () => {
     <ul class="cart-list">
       <li v-for="(item, index) in cartStore.cart" :key="index" class="cart-item">
         <span>{{ item.title }}
-        <!-- Exibe o tipo para hambúrgueres e tamanho para aperitivos -->
-        <span v-if="item.type">({{ item.type }})</span> 
+        <span v-if="item.type">({{ item.type }})</span>
         <span v-if="item.size">({{ item.size }})</span>
         </span>
         <span class="cart-price">
-        <!-- Exibe o valor dependendo do tipo do item (hambúrguer, aperitivo, bebida) -->
-        {{ item.type 
-         ? currency(item.type === "single" ? item.values.single : item.values.combo) 
-         : item.size 
-         ? currency(item.size === "small" ? item.values.small : item.values.large) 
-         : currency(item.value) 
-        }}
+          {{ item.type 
+           ? currency(item.type === "single" ? item.values.single : item.values.combo) 
+           : item.size 
+           ? currency(item.size === "small" ? item.values.small : item.values.large) 
+           : currency(item.value) 
+          }}
         </span>
-        <FontAwesomeIcon
-          class="remove-icon"
-          :icon="faTrash"
-          @click="cartStore.removeFromCart(index)"
-        />
       </li>
     </ul>
     <div class="order-total">
@@ -153,142 +152,15 @@ const goBack = () => {
         <FontAwesomeIcon :icon="faCreditCard" /> Confirmar Pedido
       </button>
     </div>
-  </div>
 
+    <CustomAlert 
+      v-if="showCustomAlert" 
+      :key="alertMessage" 
+      :message="alertMessage" 
+      :isVisible="showCustomAlert" 
+      @close="onAlertClose" 
+    />
+  </div>
 </template>
 
-<style scoped>
-.payment-container {
-  font-family: 'Arial', sans-serif;
-  height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-color:#fff;
-  position: relative;
-  background-image: url('/assets/images/pagamento.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.title {
-  text-align: center;
-  font-size: 36px;
-  color: #fff;
-  margin-bottom: 20px;
-  font-weight: bold;
-}
-
-.cart-title {
-  text-align: center;
-  list-style: none;
-  padding: 0;
-  color: #1d0eec;
-}
-
-.cart-list {
-  list-style: none;
-  padding: 5;
-  color: #fff;
-}
-
-.cart-item {
-  margin-bottom: 10px;
-}
-
-.order-total {
-  text-align: center;
-  font-size: 20px;
-  color: #1d0eec;
-}
-
-.payment-title {
-  text-align: center;
-  font-size: 20px;
-  color: #1d0eec;
-  margin-top: 20px;
-}
-
-.payment-option {
-  display: block;
-  margin-bottom: 10px;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.payment-options {
-  padding: 25px;
-}
-
-.buttons-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.button {
-  background-color: #1d0eec;
-  color: white;
-  font-size: 18px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  flex: 1;
-  margin: 0 10px;
-}
-
-.button:disabled {
-  background-color: #6960ec;
-  cursor: not-allowed;
-}
-
-.button:hover {
-  background-color: #6960ec;
-}
-
-.cart-container {
-  position: fixed;
-  top: 200px;
-  right: 15px;
-  background-color: rgba(255, 255, 255, 0.7);
-  padding: 20px;
-  border-radius: 50px;
-  max-width: 500px;
-  width: 100%;
-  z-index: 10;
-  overflow-y: auto;
-}
-
-.cart-title {
-  font-size: 24px;
-  margin-bottom: 15px;
-}
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  font-size: 16px;
-  white-space: nowrap;
-}
-
-.cart-price {
-  color: #fff;
-  font-size: 18px;
-}
-
-.cart-total {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  font-size: 20px;
-}
-
-.total-price {
-  font-weight: bold;
-  color: #fff;
-}
-</style>
+<style src="../../styles/payment.css"></style>

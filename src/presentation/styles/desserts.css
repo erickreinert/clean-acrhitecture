@@ -1,20 +1,17 @@
-html, body {
-  height: 100%;
-  margin: 0;
-}
 
-.hamburger-container {
+.desserts-container {
   font-family: 'Arial', sans-serif;
-  height: 100%; /* Garantir que o contêiner ocupe 100% da altura da tela */
+  height: 100vh; 
   width: 100%; 
   margin: 0;
   padding: 0;
-  border-radius: 0; /* Corrigir border-radius para 0 ou valor desejado */
+  border-radius: px;
   position: relative;
-  background-image: url('/assets/images/hambuger_page.jpg');
-  background-size: cover;  /* Garantir que a imagem cubra todo o espaço */
+  background-image: url('/assets/images/sobremesa.jpg');
+  background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
+    
 }
 
 .title {
@@ -25,12 +22,12 @@ html, body {
   font-weight: bold;
 }
 
-.hamburger-list {
+.desserts-list {
   list-style-type: none;
   padding: 0;
 }
 
-.hamburger-item {
+.dessert-item {
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
@@ -42,11 +39,7 @@ html, body {
   transition: transform 0.3s ease;
 }
 
-.hamburger-item:hover {
-  transform: translateY(-5px);
-}
-
-.hamburger-image {
+.dessert-image {
   width: 120px;
   height: 120px;
   object-fit: cover;
@@ -54,31 +47,34 @@ html, body {
   margin-right: 20px;
 }
 
-.hamburger-info {
-  flex-grow: 1;
+.dessert-info {
+  display: flex;
+  flex-direction: column;
 }
 
-.hamburger-title {
-  font-size: 24px;
+.dessert-title {
+  font-size: 20px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
-.hamburger-description {
+.dessert-description {
   font-size: 14px;
   color: #666;
   margin-bottom: 15px;
 }
 
-.price {
-  font-size: 18px;
-  color: #28a745;
+.dessert-bottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.hamburger-prices {
+.dessert-price {
   font-size: 16px;
   font-weight: bold;
+  color: #28a745;
 }
 
 .cart-icon {
@@ -93,6 +89,40 @@ html, body {
   transform: scale(1.2);
 }
 
+/* Botões de navegação */
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.button {
+  background-color: #1d0eec;;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.button:disabled {
+  background-color: #6960ec;
+  cursor: not-allowed;
+}
+
+.button:hover {
+  background-color: #1d0eec;
+}
+
+.button:disabled:hover {
+  background-color: #6960ec;
+}
+
+/* Carrinho */
 .cart-container {
   position: fixed;
   top: 200px;
@@ -155,37 +185,4 @@ html, body {
 .total-price {
   font-weight: bold;
   color: #0c0a01;
-}
-
-
-.buttons-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-
-.button {
-  background-color: #1d0eec;
-  color: white;
-  font-size: 18px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  flex: 1;
-  margin: 0 10px;
-}
-
-.button:disabled {
-  background-color: #6960ec;
-  cursor: not-allowed;
-}
-
-.button:hover {
-  background-color: #6960ec;
-}
-
-.button:disabled:hover {
-  background-color: #6960ec;
 }

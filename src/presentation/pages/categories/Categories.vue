@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { defineProps, PropType, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import CustomAlert from "../../components/CustomAlert.vue";
+//import axios from "axios";
 
 // Define as propriedades recebidas pelo componente
 import { Categories, CategoriesModel } from "../../protocols";
@@ -15,6 +16,7 @@ const listaCategories = ref<CategoriesModel>([])
 
 // Instância do Vue Router para navegação
 const router = useRouter();
+const showCustomAlert = ref(false); // Estado do alerta
 
 // Função para listar as categorias usando a propriedade injetada
 const listarCategories = async () => {
@@ -38,7 +40,7 @@ const navigateToCategory = (category: string) => {
       router.push("/Beverages"); // Navega para a página de Bebidas
       break;
     case "combos":
-      alert("Produto indisponível, no momento! Por favor utilize os outros menus!\nPara realizar o seu pedido, Obrigado! ")
+      showCustomAlert.value = true; // Exibe o alerta customizado
       break;
     case "sobremesas":
       router.push("/Desserts"); // Navega para a página de Sobremesas
@@ -86,67 +88,14 @@ onMounted(() => {
         </div>
       </li>
     </ul>
+    <!-- Alerta customizado -->
+    <CustomAlert v-if="showCustomAlert" :is-visible="showCustomAlert" @close="showCustomAlert = false">
+      Produto indisponível, no momento. <br />
+      Por favor, explore os outros menus  <br />
+      para realizar o seu pedido, <br />
+      Agradecemos a sua compreensão!
+    </CustomAlert>
   </div>
 </template>
 
-
-<style scoped>
-
-.categories-container {
-  font-family: 'Arial', sans-serif;
-  height: 100vh; 
-  width: 100%; 
-  margin: 0 auto;
-  padding: 2px;
-  color: #ccc;
-  background-image: url('/assets/images/categorias.jpg');
-  background-size: cover; 
-  background-position: center; 
-  background-repeat: no-repeat; 
-  margin: 0; 
-  padding: 0; 
-}
-
-.title {
-  text-align: center;
-  font-size: 36px;
-  color: #fff; /* Cor do título em branco para contraste */
-  margin-bottom: 350px;
-  font-weight: bold;
-}
-
-.categories-list {
-  display: flex; /* Faz os itens ficarem em uma linha */
-  justify-content: space-around; /* Espaça igualmente os itens */
-  list-style: none;
-  padding: 10;
-  gap: 20px; /* Espaço entre os itens */
-}
-
-.category-item {
-  display: flex;
-  justify-content: center;
-}
-
-.category-card {
-  background: #f8f7f680;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 2px 4px rgba(223, 55, 55, 0.1);
-  transition: transform 0.2s ease-in-out;
-  border-radius: 50%;
-  text-align: center;
-}
-
-.category-card:hover {
-  transform: scale(1.05);
-  background-color: #f1f1f1;
-}
-
-.category-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-}
-</style>
+<style src="../../styles/categories.css"></style>
