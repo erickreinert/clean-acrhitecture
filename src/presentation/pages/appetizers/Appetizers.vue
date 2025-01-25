@@ -30,7 +30,7 @@ const listarAppetizers = async () => {
 
 // Navegar para a próxima tela
 const goToNextPage = () => {
-  router.push("/desserts");
+  router.push("/beverages");
 };
 
 // Finalizar o pedido

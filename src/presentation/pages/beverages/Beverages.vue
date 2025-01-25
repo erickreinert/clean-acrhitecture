@@ -42,6 +42,9 @@ const goToHome = () => {
   router.push("/categories");
 };
 
+const goToNextPage = () => {
+  router.push("/desserts");
+};
 
 // Navegar para a tela de pagamento
 const goToPayment = () => {
@@ -123,6 +126,9 @@ onMounted(() => {
     <div class="buttons-container">
       <button class="button" @click="goToHome">
         <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para Inicio
+      </button>
+      <button class="button" @click="goToNextPage">
+        <FontAwesomeIcon :icon="faArrowRight" /> Avançar
       </button>
       <button class="button" @click="goToPayment" :disabled="cartStore.cart.length === 0">
         <FontAwesomeIcon :icon="faCreditCard" /> Finalizar Pedido

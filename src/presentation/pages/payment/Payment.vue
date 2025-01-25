@@ -184,7 +184,7 @@ const goBack = () => {
   text-align: center;
   list-style: none;
   padding: 0;
-  color: #fff;
+  color: #1d0eec;
 }
 
 .cart-list {
@@ -200,13 +200,13 @@ const goBack = () => {
 .order-total {
   text-align: center;
   font-size: 20px;
-  color: #fff;
+  color: #1d0eec;
 }
 
 .payment-title {
   text-align: center;
   font-size: 20px;
-  color: #fff;
+  color: #1d0eec;
   margin-top: 20px;
 }
 

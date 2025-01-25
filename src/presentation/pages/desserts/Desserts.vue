@@ -40,10 +40,6 @@ const addToCart = (dessert) => {
   cartStore.addDessertToCart(dessert); // Usa a ação de adicionar sobremesa do Pinia
 };
 
-const goToNextPage = () => {
-  router.push("/beverages");
-};
-
 const goToPayment = () => {
   router.push({ name: "payment" });
 };
@@ -89,9 +85,6 @@ onMounted(() => {
     <div class="buttons-container">
       <button class="button" @click="router.push('/Categories')">
         <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para a Início
-      </button>
-      <button class="button" @click="goToNextPage">
-        <FontAwesomeIcon :icon="faArrowRight" /> Avançar
       </button>
       <button class="button" @click="goToPayment" :disabled="cartStore.cart.length === 0">
         <FontAwesomeIcon :icon="faCreditCard" /> Finalizar Pedido
