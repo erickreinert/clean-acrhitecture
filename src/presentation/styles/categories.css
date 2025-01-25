@@ -27,11 +27,11 @@ html, body {
 }
 
 .categories-list {
-  display: flex; /* Faz os itens ficarem em uma linha */
-  justify-content: space-around; /* Espaça igualmente os itens */
+  display: flex; 
+  justify-content: space-around; 
   list-style: none;
   padding: 10;
-  gap: 20px; /* Espaço entre os itens */
+  gap: 20px; 
 }
 
 .category-item {
