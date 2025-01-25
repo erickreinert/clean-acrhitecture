@@ -49,12 +49,19 @@ No terminal rode o comando
 npm run dev
 ```
 
-#Logins
+####Logins
 User 1
+```
 login: eliane_almeida@gmail.com.br
+```
+```
 password: Prior8756@
+```
 
 User 2
+```
 login: manoeljuandapaz@gmail.com.br
+```
+```
 password: Pedra0143@
-
+```
