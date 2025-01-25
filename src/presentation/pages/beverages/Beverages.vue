@@ -131,7 +131,6 @@ html, body {
   width: 100%; 
   margin: 0;
   padding: 0;
-  background-color: #ff7f32; 
   border-radius: 0; /* Corrigir border-radius para 0 ou valor desejado */
   position: relative;
   background-image: url('/assets/images/bebidas.jpg');

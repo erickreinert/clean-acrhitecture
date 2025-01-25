@@ -119,13 +119,13 @@ onMounted(listarDesserts);
 </template>
 
 <style scoped>
+
 .desserts-container {
   font-family: 'Arial', sans-serif;
   height: 100vh; 
   width: 100%; 
   margin: 0;
   padding: 0;
-  background-color: #ff7f32; 
   border-radius: px;
   position: relative;
   background-image: url('/assets/images/sobremesa.jpg');

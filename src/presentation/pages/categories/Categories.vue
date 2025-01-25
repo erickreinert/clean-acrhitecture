@@ -37,7 +37,7 @@ const navigateToCategory = (category: string) => {
       router.push("/Beverages"); // Navega para a página de Bebidas
       break;
     case "combos":
-      router.push("/combos"); // Navega para a página de Combos
+      alert("Produto indisponível, no momento! Por favor utilize os outros menus!\nPara realizar o seu pedido, Obrigado! ")
       break;
     case "sobremesas":
       router.push("/Desserts"); // Navega para a página de Sobremesas
@@ -86,7 +86,6 @@ onMounted(listarCategories);
   width: 100%; 
   margin: 0 auto;
   padding: 2px;
-  background-color: #ff7f32;
   color: #ccc;
   background-image: url('/assets/images/categorias.jpg');
   background-size: cover; 
