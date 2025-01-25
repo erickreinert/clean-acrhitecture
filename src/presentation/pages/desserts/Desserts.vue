@@ -57,7 +57,7 @@ onMounted(listarDesserts);
       <li v-for="dessert in listaDesserts" :key="dessert.id" class="dessert-item">
         <img :src="dessert.image" alt="Imagem da sobremesa" class="dessert-image" />
         <div class="dessert-info">
-          <h2 class="dessert-title">{{ dessert.text }}</h2>
+          <h2 class="dessert-title">{{ dessert.title }}</h2>
           <p class="dessert-description">{{ dessert.text }}</p>
           <div class="dessert-bottom">
             <span class="dessert-price">{{ currency(dessert.value) }}</span>
