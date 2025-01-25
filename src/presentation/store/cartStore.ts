@@ -41,19 +41,9 @@ export const useCartStore = defineStore("cart", {
       this.cart.push(cartItem);   
     },
     // Adicionar uma bebida ao carrinho
-    addBeverageToCart(beverage: BeveragesModel[number], quantity: number = 1) {
-      const existingBeverage = this.cart.find(
-        (item) => "quantity" in item && item.id === beverage.id
-      );
-
-      if (existingBeverage) {
-        // Se a bebida já estiver no carrinho, atualiza a quantidade
-        existingBeverage.quantity += quantity;
-      } else {
-        // Caso contrário, adiciona a bebida com a quantidade inicial
-        const cartItem = { ...beverage, quantity };
-        this.cart.push(cartItem);
-      }
+    addBeverageToCart(beverage: BeveragesModel[number]) {
+      const cartItem = { ...beverage };
+       this.cart.push(cartItem);   
     },
     // Remover item do carrinho
     removeFromCart(index: number) {
