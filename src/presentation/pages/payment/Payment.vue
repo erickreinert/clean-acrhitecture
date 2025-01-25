@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, defineProps } from "vue";
-import axios from "axios";
+import { ref, onMounted, computed, defineProps, PropType } from "vue";
 import { useCartStore } from "../../store/cartStore";
-import { PaymentModel, Payment } from "../../protocols";
+import { PaymentModel, Payment, Order, Authentication } from "../../protocols";
 import { faArrowLeft, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useRouter } from "vue-router";
 
-const { payment } = defineProps({
+const { payment, order, currentAccount } = defineProps({
   payment: Object as PropType<Payment>,
+  order: Object as PropType<Order>,
+  currentAccount: Function as PropType<any>,
 });
 
 // Obtenha a store do carrinho
@@ -20,11 +21,14 @@ const selectedPaymentModel = ref<string>("");
 
 // Carregar opções de pagamento
 const loadPaymentModel = async () => {
-  try {
-    const response = await payment.get();
-    listaPayment.value = response;
-  } catch (error) {
-    console.error("Erro ao carregar opções de pagamento:", error);
+  if (payment) {
+
+    try {
+      const response = await payment.get();
+      listaPayment.value = response;
+    } catch (error) {
+      console.error("Erro ao carregar opções de pagamento:", error);
+    }
   }
 };
 
@@ -39,18 +43,22 @@ const finalizeOrder = async () => {
     items: cartStore.cart.map((item) => ({
       title: item.title,
       value: "type" in item 
-        ? (item.type === "single" ? item.values.single : item.values.combo) 
+        ? (item.type === "single" ? Number(item.values.single) : Number(item.values.combo)) 
         : ("size" in item 
-          ? (item.size === "small" ? item.values.small : item.values.large)
+          ? (item.size === "small" ? Number(item.values.small) : Number(item.values.large))
           : item.value),
     })),
-    paymentModel: selectedPaymentModel.value,
+    paymentOption: selectedPaymentModel.value,
   };
 
   try {
-    const response = await axios.post("https://burgerlivery-api.vercel.app/order/create-order", orderData);
-    alert("Pedido realizado com sucesso!");
+    const token = currentAccount.get().token
+    if (token) {
+      const response = await order?.createOrder(orderData, token);
+      alert("Pedido realizado com sucesso!\nNúmero do pedido: " + response?.orderNumber);
+    }
     cartStore.clearCart(); // Limpa o carrinho após finalizar o pedido
+    location.href = "/Categories"
   } catch (error) {
     console.error("Erro ao finalizar pedido:", error);
   }
@@ -122,7 +130,7 @@ const goBack = () => {
     <div class="payment-options">
       <label v-for="option in listaPayment" :key="option.id" class="payment-option">
         <input type="radio" :value="option.text" v-model="selectedPaymentModel" />
-        {{ option.text }} - {{ currency(option.value) }}
+        {{ option.text }}
       </label>
     </div>
 

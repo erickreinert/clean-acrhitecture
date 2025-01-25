@@ -6,4 +6,5 @@ export * from "./beverages";
 export * from "./appetizers";
 export * from "./desserts";
 export * from "./payment";
+export * from "./order";
 

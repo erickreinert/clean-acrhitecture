@@ -5,6 +5,7 @@ export * from "./GetBeverages"
 export * from "./GetCategories"
 export * from "./GetPayment"
 export * from "./GetDesserts"
+export * from "./PostOrder"
 
 
 

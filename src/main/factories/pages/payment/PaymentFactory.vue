@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import Payment from "../../../../presentation/pages/payment/Payment.vue";
-import {ListPayment} from "../../usecases/PaymentFactory";
+import { MakeCurrentAccountAdapter } from "../../cache";
+import {ListPayment, CreateOrder, } from "../../usecases/PaymentFactory";
 
 </script>
 <template>
-    <Payment :payment="ListPayment()"/>
+    <Payment :payment="ListPayment()" :order="CreateOrder()" :currentAccount="MakeCurrentAccountAdapter()"/>
   </template>
 

@@ -10,6 +10,7 @@ export const apiRoutes = {
   beverages: `${baseUrl}/beverages`,
   desserts: `${baseUrl}/desserts`,
   payment: `${baseUrl}/payment/options`,
+  makePayment: `${baseUrl}/order/create-order`,
 };
 
 
