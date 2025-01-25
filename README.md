@@ -1,6 +1,11 @@
-# Clean Architecture
+# Code Burger
 Projeto Frontend utilizando camadas para separação de responsabilidades visando um crescimento ordenado da aplicação.
 Baseado na abordagen do livro Clean Architecture, visando criar um arquitetura para projetos frontend.
+
+## RM FIAP
+Erick Reinert - RM354669
+Fabio Franca  - RM354414
+Jose Vitor    - RM354496
 
 ## Diagrama
 
@@ -43,3 +48,5 @@ No terminal rode o comando
 ```bash
 npm run dev
 ```
+
+
