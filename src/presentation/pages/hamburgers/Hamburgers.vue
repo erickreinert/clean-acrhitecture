@@ -102,7 +102,7 @@ onMounted(() => {
       <button class="circle-button center" @click="goToNextPage">
         <FontAwesomeIcon :icon="faArrowRight" /> 
       </button>
-      <button class="circle-button rigth" @click="goToPayment" :disabled="cartStore.cart.length === 0">
+      <button class="circle-button rigth" @click="goToPayment" :disabled="cartStore.cart.length === 0" :title="cartStore.cart.length === 0 ? 'Adicione itens ao carrinho para prosseguir com o pagamento' : 'Ir para o pagamento'">
         <FontAwesomeIcon :icon="faCreditCard" /> 
       </button>
     </div>
