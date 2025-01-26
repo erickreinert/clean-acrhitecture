@@ -171,28 +171,59 @@
   margin-top: 30px;
 }
 
-.button {
-  background-color: #1d0eec;
-  color: white;
-  font-size: 18px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  flex: 1;
-  margin: 0 10px;
+.appetizer-container {
+  padding-top: 70px; /* Espaçamento acima para evitar sobreposição com os botões */
+}
+.top-buttons {
+  display: flex;
+  justify-content: space-between; /* Distribui os botões de maneira uniforme */
+  margin-top: 10px; /* Ajuste este valor para controlar o espaço entre o título e os botões */
+  padding: 0; /* Espaçamento lateral */
 }
 
-.button:disabled {
+.circle-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #1d0eec;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.circle-button:hover {
+  background-color: rgba(0, 0, 255, 0.8);
+  transform: scale(1.1);
+}
+
+.circle-button svg {
+  font-size: 24px;
+  color: #ffffff; /* Cor branca para o ícone */
+}
+
+.circle-button.left {
+  left: 20px;
+}
+
+.circle-button.right {
+  right: 10px;
+}
+
+
+.circle-button:hover {
+  background-color: #0000ff; /* Azul mais escuro no hover */
+  transform: scale(1.1);
+}
+
+.circle-button:hover svg {
+  color: #ffffff; /* Mantém a seta branca no hover */
+}
+
+.circle-button:disabled {
   background-color: #6960ec;
   cursor: not-allowed;
-}
-
-.button:hover {
-  background-color: #6960ec;
-}
-
-.button:disabled:hover {
-  background-color: #6960ec;
 }

@@ -19,8 +19,8 @@ html, body {
 
 .title {
   text-align: center;
-  font-size: 36px;
-  color: #fff; /* Cor do título em branco para contraste */
+  font-size: 24px; /* Ajuste o tamanho do título conforme necessário */
+  color: #6b1b1b; /* Cor do título */
   margin-bottom: 20px;
   font-weight: bold;
 }
@@ -34,7 +34,7 @@ html, body {
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
-  margin: 15px;
+  margin: 15px ; /* Reduzido para diminuir o espaço entre os itens */
   padding: 15px;
   width: 50%;
   border-radius: 25px; /* Menor arredondamento */
@@ -92,6 +92,7 @@ html, body {
   color: #ffd700;
   transform: scale(1.2);
 }
+
 /* Resumo do Pedido */
 .cart-container {
   position: fixed;
@@ -100,6 +101,7 @@ html, body {
   right: 15px;
   background-color: rgba(255, 255, 255, 0.7);
   padding: 20px;
+  margin-top: 70px;
   border-radius: 50px;
   max-width: 500px;
   width: 100%;
@@ -160,31 +162,60 @@ html, body {
   transform: scale(1.2);
 }
 
-/* Botões */
-.buttons-container {
+.beverages-container {
+  padding-top: 70px; /* Espaçamento acima para evitar sobreposição com os botões */
+}
+
+.top-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+  justify-content: space-between; /* Distribui os botões de maneira uniforme */
+  margin-top: 10px; /* Ajuste este valor para controlar o espaço entre o título e os botões */
+  padding: 0; /* Espaçamento lateral */
 }
 
-.button {
+.circle-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   background-color: #1d0eec;
-  color: white;
-  font-size: 18px;
-  padding: 10px 20px;
-  border-radius: 5px;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: background-color 0.3s;
-  flex: 1;
-  margin: 0 10px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.button:disabled {
+.circle-button:hover {
+  background-color: rgba(0, 0, 255, 0.8);
+  transform: scale(1.1);
+}
+
+.circle-button svg {
+  font-size: 24px;
+  color: #ffffff; /* Cor branca para o ícone */
+}
+
+.circle-button.left {
+  left: 20px;
+}
+
+.circle-button.right {
+  right: 10px;
+}
+
+
+.circle-button:hover {
+  background-color: #0000ff; /* Azul mais escuro no hover */
+  transform: scale(1.1);
+}
+
+.circle-button:hover svg {
+  color: #ffffff; /* Mantém a seta branca no hover */
+}
+
+.circle-button:disabled {
   background-color: #6960ec;
   cursor: not-allowed;
-}
-
-.button:hover {
-  background-color: #6960ec;
 }

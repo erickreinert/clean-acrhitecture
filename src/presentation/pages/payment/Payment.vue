@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, defineProps, PropType } from "vue";
 import { useCartStore } from "../../store/cartStore";
 import { PaymentModel, Payment, Order, Authentication } from "../../protocols";
-import { faArrowLeft, faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCreditCard, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useRouter } from "vue-router";
 import CustomAlert from "../../components/CustomAlert.vue";
@@ -146,7 +146,7 @@ const goBack = () => {
 
     <div class="buttons-container">
       <button class="button" @click="goBack">
-        <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para a Início
+        <FontAwesomeIcon :icon="faHome" /> Voltar para a Início
       </button>
       <button class="button" @click="finalizeOrder">
         <FontAwesomeIcon :icon="faCreditCard" /> Confirmar Pedido

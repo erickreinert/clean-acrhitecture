@@ -36,7 +36,7 @@ html, body {
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com transparência */
-  margin: 15px;
+  margin: 35px;
   padding: 15px;
   width: 50%;
   border-radius: 25px; /* Menor arredondamento */
@@ -94,45 +94,11 @@ html, body {
   transform: scale(1.2);
 }
 
-/* Botões de navegação */
-.buttons-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.button {
-  background-color: #1d0eec;;
-  color: white;
-  font-size: 18px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  flex: 1;
-  margin: 0 10px;
-}
-
-.button:disabled {
-  background-color: #6960ec;
-  cursor: not-allowed;
-}
-
-.button:hover {
-  background-color: #1d0eec;
-}
-
-.button:disabled:hover {
-  background-color: #6960ec;
-}
-
-/* Carrinho */
 .cart-container {
   position: fixed;
   top: 60px;
   bottom: 100px; /* Adiciona distância da parte inferior */
-  right: 15px;
+  right: 25px;
   background-color: rgba(255, 255, 255, 0.7);
   padding: 20px;
   border-radius: 50px;
@@ -145,7 +111,7 @@ html, body {
 }
 .cart-title {
   font-size: 24px;
-  margin-bottom: 15px;
+  margin-bottom: 50px;
 }
 
 .cart-list {
@@ -193,4 +159,64 @@ html, body {
 .total-price {
   font-weight: bold;
   color: #0c0a01;
+}
+
+.desserts-container {
+  padding-top: 70px; /* Espaçamento acima para evitar sobreposição com os botões */
+}
+
+
+.top-buttons {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+.circle-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #1d0eec;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.circle-button:hover {
+  background-color: rgba(0, 0, 255, 0.8);
+  transform: scale(1.1);
+}
+
+.circle-button.left {
+  left: 10px;
+}
+
+.circle-button.right {
+  right: 10px;
+}
+
+.circle-button svg {
+  font-size: 24px;
+  color: #ffffff; /* Cor branca para a seta */
+}
+
+.circle-button:hover {
+  background-color: #0000ff; /* Azul mais escuro no hover */
+  transform: scale(1.1);
+}
+
+.circle-button:hover svg {
+  color: #ffffff; /* Mantém a seta branca no hover */
+}
+
+.circle-button:disabled {
+  background-color: #6960ec;
+  cursor: not-allowed;
 }

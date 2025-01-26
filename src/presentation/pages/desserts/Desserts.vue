@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, PropType, ref, onMounted } from "vue";
-import { faShoppingCart, faTrash, faArrowLeft, faArrowRight, faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faTrash, faArrowLeft, faArrowRight, faCreditCard, faHome  } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useRouter } from "vue-router";
 import { useCartStore } from "../../store/cartStore";
@@ -82,12 +82,14 @@ onMounted(() => {
     </ul>
 
     <!-- Botões de navegação -->
-    <div class="buttons-container">
-      <button class="button" @click="router.push('/Categories')">
-        <FontAwesomeIcon :icon="faArrowLeft" /> Voltar para a Início
+    <div class="top-buttons">      
+      <!-- Botão de voltar -->
+      <button class="circle-button left" @click="router.push('/Categories')">
+        <FontAwesomeIcon :icon="faHome" />
       </button>
-      <button class="button" @click="goToPayment" :disabled="cartStore.cart.length === 0">
-        <FontAwesomeIcon :icon="faCreditCard" /> Finalizar Pedido
+      <!-- Botão de pagamento -->
+      <button class="circle-button rigth" @click="goToPayment" :disabled="cartStore.cart.length === 0">
+        <FontAwesomeIcon :icon="faCreditCard" />
       </button>
     </div>
   </div>
