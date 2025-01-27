@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps, PropType, ref, onMounted } from "vue";
 // import axios from "axios";
-import { faShoppingCart, faTrash, faArrowLeft, faArrowRight, faCreditCard, faHome } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faTrash, faHome, faGlassMartini, faIceCream, faBowlFood, faCreditCard} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useRouter } from "vue-router";
 import { useCartStore } from "../../store/cartStore";
@@ -33,9 +33,24 @@ const listarHamburgers = async () => {
   }
 };
 
-// Navegar para a próxima tela
-const goToNextPage = () => {
+// Navegar para a tela inicial
+const goToHome = () => {
+  router.push("/categories");
+};
+
+// Ir para  Appertizers
+const goToAppetizers = () => {
   router.push("/appetizers");
+};
+
+// Ir para Sobremesas
+const goToDesserts = () => {
+  router.push("/desserts");
+};
+
+// Ir para Bebidas
+const goToBeverages = () => {
+  router.push("/beverages");
 };
 
 // Finalizar o pedido
@@ -96,11 +111,17 @@ onMounted(() => {
     </ul>
 
     <div class="top-buttons">
-      <button class="circle-button left" @click="router.push('/Categories')">
+      <button class="circle-button left" @click="goToHome" title= 'Ir para o Home'>
         <FontAwesomeIcon :icon="faHome" /> 
       </button>
-      <button class="circle-button center" @click="goToNextPage">
-        <FontAwesomeIcon :icon="faArrowRight" /> 
+      <button class="circle-button center" @click="goToAppetizers" title= 'Ir para o Porções'>
+        <FontAwesomeIcon :icon="faBowlFood" /> 
+      </button>
+      <button class="circle-button center" @click="goToBeverages" title= 'Ir para o Bebidas'>
+        <FontAwesomeIcon :icon="faGlassMartini" /> 
+      </button>  
+      <button class="circle-button center" @click="goToDesserts" title= 'Ir para o Sobremesas'>
+        <FontAwesomeIcon :icon="faIceCream" /> 
       </button>
       <button class="circle-button rigth" @click="goToPayment" :disabled="cartStore.cart.length === 0" :title="cartStore.cart.length === 0 ? 'Adicione itens ao carrinho para prosseguir com o pagamento' : 'Ir para o pagamento'">
         <FontAwesomeIcon :icon="faCreditCard" /> 
